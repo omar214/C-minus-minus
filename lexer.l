@@ -13,7 +13,7 @@
 
     // Global variables
     int yy_lineno = 1;
-    int debug = 1;
+    int debug = 0;
 %}
 
 %option yylineno
@@ -34,79 +34,80 @@ OTHERS          .
 
 %%
     /* Reserved Data Types */
-"int"           {if(debug) printf("data_type %s\n", yytext); }
-"float"         {if(debug) printf("data_type %s\n", yytext); }
-"string"        {if(debug) printf("data_type %s\n", yytext); }
-"char"          {if(debug) printf("data_type %s\n", yytext); }
-"bool"          {if(debug) printf("data_type %s\n", yytext); }
-"const"         {if(debug) printf("data_type %s\n", yytext); }
-"void"          {if(debug) printf("data_type %s\n", yytext); }
+"int"           {if(debug) printf("data_type %s\n", yytext); return INT_TYPE; }
+"float"         {if(debug) printf("data_type %s\n", yytext); return FLOAT_TYPE; }
+"string"        {if(debug) printf("data_type %s\n", yytext); return STRING_TYPE; }
+"char"          {if(debug) printf("data_type %s\n", yytext); return CHAR_TYPE; }
+"bool"          {if(debug) printf("data_type %s\n", yytext); return BOOL_TYPE;  }
+"const"         {if(debug) printf("data_type %s\n", yytext); return CONST; }
+"void"          {if(debug) printf("data_type %s\n", yytext); return VOID; }
 
     /* Reserved Keywords */
-"if"            {printf("if\n"); }
-"else"          {printf("else\n"); }
+"if"            {if(debug)  printf("if\n"); return IF;}
+"else"          {if(debug)  printf("else\n"); return ELSE;}
 
-"switch"        {printf("switch\n"); }
-"case"          {printf("case\n"); }
-"default"       {printf("default\n"); }
+"switch"        {if(debug)  printf("switch\n"); return SWITCH;}
+"case"          {if(debug)  printf("case\n"); return CASE;}
+"default"       {if(debug)  printf("default\n"); return DEFAULT;}
 
-"while"         {printf("while\n"); }
-"break"         {printf("break\n"); }
+"while"         {if(debug)  printf("while\n"); return WHILE;}
+"break"         {if(debug)  printf("break\n"); return BREAK;}
 
-"for"           {printf("for\n"); }
-"do"            {printf("do\n"); }
-"return"        {printf("return\n"); }
+"for"           {if(debug)  printf("for\n"); return FOR;}
+"do"            {if(debug)  printf("do\n"); return DO;}
+"return"        {if(debug)  printf("return\n"); return RETURN;}
 
     /* Mathematical Operators */
-"="             {printf("assignment\n"); }
-"+"             {printf("addition\n"); }
-"-"             {printf("subtraction\n"); }
-"*"             {printf("multiplication\n"); }
-"/"             {printf("division\n"); }
-"%"             {printf("modulus\n"); }
+"="             {if(debug)  printf("assignment\n"); return ASSIGNMENT;}
+"+"             {if(debug)  printf("addition\n"); return ADD;}
+"-"             {if(debug)  printf("subtraction\n"); return SUB;}
+"*"             {if(debug)  printf("multiplication\n"); return MUL;}
+"/"             {if(debug)  printf("division\n"); return DIV;}
+"%"             {if(debug)  printf("modulus\n"); return MOD;}
 
     /* Logical Operators */
-"&&"            {printf("logical_and\n"); }
-"||"            {printf("logical_or\n"); }
-"!"             {printf("logical_not\n"); }
+"&&"            {if(debug)  printf("logical_and\n"); return AND;}
+"||"            {if(debug)  printf("logical_or\n"); return OR;}
+"!"             {if(debug)  printf("logical_not\n"); return NOT;}
 
     /* Relational Operators */
-"=="            {printf("equal_to\n"); }
-"!="            {printf("not_equal_to\n"); }
-"<"             {printf("less_than\n"); }
-">"             {printf("greater_than\n"); }
-"<="            {printf("less_than_equal_to\n"); }
-">="            {printf("greater_than_equal_to\n"); }
+"=="            {if(debug)  printf("equal_to\n"); return EQUAL_TO;}
+"!="            {if(debug)  printf("not_equal_to\n"); return NOT_EQUAL; }
+"<"             {if(debug)  printf("less_than\n"); return LT;}
+">"             {if(debug)  printf("greater_than\n"); return GT;}
+"<="            {if(debug)  printf("less_than_equal_to\n"); return LTE; }
+">="            {if(debug)  printf("greater_than_equal_to\n"); return GTE;}
 
     /* boolean values */
-"true"          {printf("true\n"); }
-"false"         {printf("false\n"); }
+    /* "true"|"false" yylval=!strcmp(yytext,"true"); */
+"true"          {if(debug)  printf("true\n");  yylval= 1;  return BOOL;}
+"false"         {if(debug)  printf("false\n"); yylval= 0; return BOOL;}
 
     /* String Values */
-{STRING_VALUE}    {printf("string %s\n", yytext); }
+{STRING_VALUE}    {if(debug)    printf("string %s\n", yytext); return STRING;}
 
     /* Character Values */
-{CHAR_VALUE}    {printf("character %c\n", yytext[1]); }
+{CHAR_VALUE}    {if(debug)  printf("character %c\n", yytext[1]); return CHAR;}
 
     /* Integer Values */
-{INT_VALUE}   {printf("integer %d\n", atoi(yytext)); }
+{INT_VALUE}   {if(debug)    printf("integer %d\n", atoi(yytext)); return INT;}
 
     /* Floating Values */
-{FLOAT_VALUE}  {printf("float %f\n", atof(yytext)); }
+{FLOAT_VALUE}  {if(debug)   printf("float %f\n", atof(yytext)); return FLOAT;}
 
     /* Identifiers */
-{IDENTIFIER}  {printf("identifier %s\n", yytext); }
+{IDENTIFIER}  {if(debug)    printf("identifier %s\n", yytext); return IDENTIFIER;}
 
     /* Punctuators */
-";"             {printf("semicolon\n"); }
-","             {printf("comma\n"); }
-":"             {printf("colon\n"); }
+";"             {if(debug)  printf("semicolon\n"); return SEMICOLON;}
+","             {if(debug)  printf("comma\n"); return COMMA; }
+":"             {if(debug)  printf("colon\n"); return COLON; }
 
     /* special characters */
-{SPECIAL_CHAR}         {printf("special_character %s\n", yytext); }
+{SPECIAL_CHAR}         {if(debug)   printf("special_character %s\n", yytext);  return *yytext;}
 
     /* whitespace */
-{WHITESPACE}          {; }
+{WHITESPACE}          ;
 
     /* new line */
 {NEWLINE}              { yy_lineno++; }
@@ -121,6 +122,7 @@ OTHERS          .
 
 %%
 
+/* return 1 if end of file is reached, else 0: int */
 int yywrap(void) {
     return 1;
 }
