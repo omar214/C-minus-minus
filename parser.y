@@ -74,148 +74,117 @@ extern int yylineno;
 
 %%
 
-program: 
-    statements;     // TODO: execute() , freeNode()
 
-statements: 
-        statement
-    |   statements statement
+program:
+         program stmt
+        | /* NULL */
+        ;
+type:
+        INT_TYPE   
+    |   FLOAT_TYPE 
+    |   CHAR_TYPE  
+    |   BOOL_TYPE  
+    |   STRING_TYPE
     ;
+    
+stmt_list:
+          stmt                                                                        
+        | stmt_list stmt                                                              
+        ;
 
-statement:  {printf("statement: \n\t");}
-        declaration SEMICOLON   { printf("declaration: \n");}
-    |   assigment   SEMICOLON   { printf("assigment: \n"); }
-    |   expr SEMICOLON      {printf("expr: \n\t");}    
-    |   if_statement        { printf("if_statement: \n\t");}
-    |   switch_statement    { printf("switch_statement: \n");}
-    |   for_statement { printf("for_statement: \n");} 
-    |   while_statement     { printf("while_statement: \n");}
-    |   do_while_statement { printf("do_while_statement: \n");}  
-    /* |   function_statement  { printf("function_statement: \n");} */
+stmt:
+          SEMICOLON                                                                                 
+        | expr SEMICOLON                                                                            
 
-	|   RETURN expr SEMICOLON { printf("return_statement: \n");}
-    |   '{' statements '}'
-    |   '{' '}'
-    |   SEMICOLON
-    /* |   error SEMICOLON
-    |   error '}' */
-	;
+        | type IDENTIFIER SEMICOLON                                                                   
+        | type IDENTIFIER ASSIGNMENT expr SEMICOLON                                                   
+        | CONST type IDENTIFIER ASSIGNMENT expr SEMICOLON                                             
+        | IDENTIFIER ASSIGNMENT expr SEMICOLON                                                        
 
-data_type:
-        INT_TYPE        { $$ = 1; if(debug) printf("data_type: int \n"); }
-    |   FLOAT_TYPE      { $$ = 2; if(debug) printf("data_type: float\n"); }
-    |   CHAR_TYPE       { $$ = 3; if(debug) printf("data_type: char\n"); }
-    |   STRING_TYPE     { $$ = 4; if(debug) printf("data_type: string\n"); }
-    |   BOOL_TYPE       { $$ = 5; if(debug) printf("data_type: bool\n"); }
-    ;
+        | WHILE '(' expr ')' stmt                                                             
+        | DO stmt WHILE '(' expr ')' SEMICOLON                                                      
+        | FOR '(' IDENTIFIER ASSIGNMENT expr SEMICOLON expr SEMICOLON IDENTIFIER ASSIGNMENT expr ')' stmt     
+                                                                                        
+        | IF '(' expr ')' stmt %prec IFX                                                      
+        | IF '(' expr ')' stmt ELSE stmt                                                      
 
-data_value:
-        INT
-    |   FLOAT
-    |   CHAR
-    |   STRING
-    |   BOOL
-    ;
+        | SWITCH '(' IDENTIFIER ')' '{' case_list case_default '}'                              
+        | BREAK SEMICOLON                                                                           
+        | type IDENTIFIER func_list '{' func_stmt_list '}'                                      
+        | VOID IDENTIFIER func_list '{' stmt_list '}'                                           
+        | VOID IDENTIFIER func_list '{' '}'                                                     
+        | '{' stmt_list '}'                                                                   
+        | '{' '}'                                                                             
+        |   error SEMICOLON                                                                         
+        |   error '}'                                                                         
+        ;
 
-declaration:
-        data_type IDENTIFIER
-    |   data_type IDENTIFIER ASSIGNMENT expr
-    |   CONST data_type IDENTIFIER ASSIGNMENT expr
-    ;
 
-assigment: 
-        IDENTIFIER ASSIGNMENT expr
-    ;
-
-expr:   
-        data_value              { if(debug) printf("expr : \n");}
-    |   IDENTIFIER              { if(debug) printf("expr : \n"); }    
-    |   SUB expr %prec UMINUS   { if(debug) printf("UMINUS expr :\n"); }
-    |   NOT expr                { if(debug) printf("not expr : \n"); }
-    |   expr ADD expr           { if(debug) printf("add expr : \n");}
-    |   expr SUB expr           { if(debug) printf("sub expr : \n");}
-    |   expr MUL expr           { if(debug) printf("mul expr : \n");}
-    |   expr DIV expr           { if(debug) printf("div expr : \n");}
-    |   expr MOD expr           { if(debug) printf("mod expr : ");}
-    |   expr LT expr            { if(debug) printf("LT expr: \n");}
-    |   expr GT expr            { if(debug) printf("GT expr: \n");}
-    |   expr GTE expr           { if(debug) printf("GTe expr: \n");}
-    |   expr LTE expr           { if(debug) printf("LTE expr: \n");}
-    |   expr NOT_EQUAL expr     { if(debug) printf("!= expr: \n");}
-    |   expr EQUAL_TO expr      { if(debug) printf("== expr: \n");}
-    |   expr AND expr           { if(debug) printf("&& expr: \n");}
-    |   expr OR expr            { if(debug) printf("|| expr: \n");}
-    |   '(' expr ')'            { $$ = $2;       if(debug) printf("parenthes expr: %d\n", $2); }
-    /* TODO: function call */
-    ;
-
-if_statement: 
-        IF '(' expr ')' statement %prec IFX         {printf("single if \n");}
-    |   IF '(' expr ')' statement ELSE statement    {printf("if_else \n");}
-    ;
-
-case_statement:
-        case_statement CASE data_value COLON statements BREAK SEMICOLON
-    |   case_statement CASE data_value COLON  BREAK SEMICOLON
-    |  /* empty */
-    ;
-
-case_default_statement:
-        DEFAULT COLON statements
-    |   DEFAULT COLON statements BREAK SEMICOLON
-    |   DEFAULT COLON BREAK SEMICOLON
-    ;
-
-switch_statement:
-        SWITCH '(' IDENTIFIER ')' '{' case_statement case_default_statement '}'
-
-loop_statement:
-        statement
-    |   BREAK SEMICOLON      { printf("break: %d\n", $1);}
-    |   CONTINUE SEMICOLON   { printf("continue: %d\n", $1);}
-
-for_init:
-        data_type IDENTIFIER ASSIGNMENT expr
-    |   assigment 
-    ;  
-
-for_statement:
-        FOR '(' for_init SEMICOLON expr SEMICOLON  assigment')' loop_statement
-    ;
-
-while_statement:
-        WHILE '(' expr ')' loop_statement
-    ;
-
-do_while_statement:
-        DO statement WHILE '(' expr ')' SEMICOLON   //TODO: check if loop_statement is 
+case_list:
+        case_list CASE INT COLON stmt_list      
+    |   case_list CASE CHAR COLON stmt_list         
+    |   case_list CASE STRING COLON stmt_list       
+    |   case_list CASE BOOL COLON stmt_list
+    |  /* NULL */                                 
     ;
 
 
+case_default: DEFAULT COLON stmt_list                                                          
 
-function_arguments:
-        data_type IDENTIFIER COMMA function_arguments
-    |   data_type IDENTIFIER
-    |   /* empty */
+expr:
+    INT                                                                                  
+    | FLOAT                                                                                  
+    | CHAR                                                                                   
+    | STRING                                                                                 
+    | BOOL                                                                           
+    | IDENTIFIER                                                                             
+    | SUB expr %prec UMINUS                                                                
+    | NOT expr                                                                               
+    /* Mathematical */
+    | expr ADD expr                                                                         
+    | expr SUB expr                                                                        
+    | expr MUL expr                                                                          
+    | expr DIV expr                                                                          
+    | expr MOD expr        
+
+    /* Logical */
+    | expr LT expr                                                                            
+    | expr GT expr                                                                            
+    | expr GTE expr                                                                           
+    | expr LTE expr                                                                           
+    | expr NOT_EQUAL expr                                                                        
+    | expr EQUAL_TO expr                                                                         
+    | expr AND expr                                                                          
+    | expr OR expr                                                                           
+    | IDENTIFIER call_list                                                                   
+    | '(' expr ')'                                                                           
     ;
 
-function_statement_list:
-        statement function_statement   
-    /* |   RETURN expr SEMICOLON */
-    |   statement
-    ;
 
-void_function_statement_list:
-        void_function_statement_list statement 
-    |   RETURN SEMICOLON
-    |   statement 
-    |   
-    ;
+func_stmt_list:
+          RETURN expr SEMICOLON                                                                  
+        | stmt func_stmt_list                                                              
+        ;
 
-function_statement:
-        data_type IDENTIFIER '(' function_arguments ')' '{' function_statement_list '}'
-    |   VOID IDENTIFIER '(' function_arguments ')' '{' void_function_statement_list '}'  // has no return value 
-    ;
+func_var_list:
+          type IDENTIFIER                                                                  
+        | type IDENTIFIER COMMA func_var_list                                                
+        ;
+
+func_list:
+    '(' func_var_list ')'                                                            
+    | '(' ')'                                                                        
+;
+
+call_var_list:
+          expr                                                                       
+        | call_var_list COMMA expr                                                     
+        ;
+
+call_list:
+    '(' call_var_list ')'                                                            
+    | '(' ')'                                                                        
+;
 
 
 %%
@@ -228,6 +197,10 @@ void yyerror(char *s) {
 int main(void) {
     printf("debug: %d\n", debug);
     printf("----------------- start -----------------\n");
+    #if defined(YYDEBUG) && (YYDEBUG==1)
+        yydebug = 1;
+        debug = 0;
+    #endif
     yyparse();
     return 0;
 }

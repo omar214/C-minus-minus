@@ -1,6 +1,6 @@
 bison:
 	@echo -e \n----------- Running Bison on Parser -----------
-	bison --yacc parser.y -d
+	bison --yacc parser.y -d --debug
 
 flex: 
 	@echo -e \n----------- Running Flex on lexer -----------
@@ -8,7 +8,7 @@ flex:
 
 compile:
 	@echo -e \n----------- Compiling both -----------
-	gcc  -o compiler.exe y.tab.c lex.yy.c
+	gcc -g -o compiler.exe y.tab.c lex.yy.c
 
 
 build: bison flex compile
