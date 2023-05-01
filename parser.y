@@ -76,10 +76,16 @@ extern int yylineno;
 
 
 program:
-         program stmt
-        | /* NULL */
+         program statement
+        | /* Empty Statement */
         ;
-type:
+
+statement_list:
+          statement                                                                        
+        | statement_list statement                                                              
+        ;
+
+data_type:
         INT_TYPE   
     |   FLOAT_TYPE 
     |   CHAR_TYPE  
@@ -87,34 +93,37 @@ type:
     |   STRING_TYPE
     ;
     
-stmt_list:
-          stmt                                                                        
-        | stmt_list stmt                                                              
-        ;
 
-stmt:
+statement:
           SEMICOLON                                                                                 
         | expr SEMICOLON                                                                            
 
-        | type IDENTIFIER SEMICOLON                                                                   
-        | type IDENTIFIER ASSIGNMENT expr SEMICOLON                                                   
-        | CONST type IDENTIFIER ASSIGNMENT expr SEMICOLON                                             
+        /* Declaration & Assignment */
+        | data_type IDENTIFIER SEMICOLON                                                                   
+        | data_type IDENTIFIER ASSIGNMENT expr SEMICOLON                                                   
+        | CONST data_type IDENTIFIER ASSIGNMENT expr SEMICOLON                                             
         | IDENTIFIER ASSIGNMENT expr SEMICOLON 
         | enum_statement                                                                                           
 
-        | WHILE '(' expr ')' stmt                                                             
-        | DO stmt WHILE '(' expr ')' SEMICOLON                                                      
-        | FOR '(' IDENTIFIER ASSIGNMENT expr SEMICOLON expr SEMICOLON IDENTIFIER ASSIGNMENT expr ')' stmt     
-                                                                                        
-        | IF '(' expr ')' stmt %prec IFX                                                      
-        | IF '(' expr ')' stmt ELSE stmt                                                      
+        /* Loop statment */
+        | WHILE '(' expr ')' statement                                                             
+        | DO statement WHILE '(' expr ')' SEMICOLON                                                      
+        | FOR '(' IDENTIFIER ASSIGNMENT expr SEMICOLON expr SEMICOLON IDENTIFIER ASSIGNMENT expr ')' statement     
+                        
+        /*  IF statment*/
+        | IF '(' expr ')' statement %prec IFX                                                      
+        | IF '(' expr ')' statement ELSE statement                                                      
 
         | SWITCH '(' IDENTIFIER ')' '{' case_list case_default '}'                              
-        | BREAK SEMICOLON                                                                           
-        | type IDENTIFIER func_list '{' func_stmt_list '}'                                      
-        | VOID IDENTIFIER func_list '{' stmt_list '}'                                           
-        | VOID IDENTIFIER func_list '{' '}'                                                     
-        | '{' stmt_list '}'                                                                   
+        | BREAK SEMICOLON
+
+        /* Function Statement */
+        | data_type IDENTIFIER function_arguements_list '{' function_statement_list '}'                                      
+        | VOID IDENTIFIER function_arguements_list '{' statement_list '}'                                           
+        | VOID IDENTIFIER function_arguements_list '{' '}'   
+
+        /* Block Statement */
+        | '{' statement_list '}'                                                                   
         | '{' '}'                                                                             
         |   error SEMICOLON                                                                         
         |   error '}'                                                                         
@@ -131,15 +140,17 @@ enum_statement:
     ;
 
 case_list:
-        case_list CASE INT COLON stmt_list      
-    |   case_list CASE CHAR COLON stmt_list         
-    |   case_list CASE STRING COLON stmt_list       
-    |   case_list CASE BOOL COLON stmt_list
+        case_list CASE INT COLON statement_list      
+    |   case_list CASE CHAR COLON statement_list         
+    |   case_list CASE STRING COLON statement_list       
+    |   case_list CASE BOOL COLON statement_list
     |  /* NULL */                                 
     ;
 
 
-case_default: DEFAULT COLON stmt_list                                                          
+case_default: 
+        DEFAULT COLON statement_list                                                          
+    ;
 
 expr:
     INT                                                                                  
@@ -165,35 +176,37 @@ expr:
     | expr NOT_EQUAL expr                                                                        
     | expr EQUAL_TO expr                                                                         
     | expr AND expr                                                                          
-    | expr OR expr                                                                           
-    | IDENTIFIER call_list                                                                   
+    | expr OR expr
+    
+    /* function call or grouped */                                                                        /*  */
+    | IDENTIFIER function_call                                                                   
     | '(' expr ')'                                                                           
     ;
 
 
-func_stmt_list:
-          RETURN expr SEMICOLON                                                                  
-        | stmt func_stmt_list                                                              
+function_statement_list:
+        RETURN expr SEMICOLON                                                                  
+    | statement function_statement_list                                                              
+    ;
+
+function_arguements:
+          data_type IDENTIFIER                                                                  
+        | data_type IDENTIFIER COMMA function_arguements                                                
         ;
 
-func_var_list:
-          type IDENTIFIER                                                                  
-        | type IDENTIFIER COMMA func_var_list                                                
-        ;
-
-func_list:
-    '(' func_var_list ')'                                                            
+function_arguements_list:
+    '(' function_arguements ')'                                                            
     | '(' ')'                                                                        
 ;
 
-call_var_list:
-          expr                                                                       
-        | call_var_list COMMA expr                                                     
-        ;
+function_arguements_call:
+        expr                                                                       
+    |   function_arguements_call COMMA expr                                                     
+    ;
 
-call_list:
-    '(' call_var_list ')'                                                            
-    | '(' ')'                                                                        
+function_call:
+        '(' function_arguements_call ')'                                                            
+    |   '(' ')'                                                                        
 ;
 
 
@@ -208,9 +221,10 @@ int main(void) {
     printf("debug: %d\n", debug);
     printf("----------------- start -----------------\n");
     #if defined(YYDEBUG) && (YYDEBUG==1)
-        yydebug = 1;
+        yydebug = 0;
         debug = 0;
     #endif
     yyparse();
+    printf("\n----------------- Parse End -----------------");
     return 0;
 }
