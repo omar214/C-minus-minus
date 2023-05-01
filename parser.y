@@ -145,7 +145,7 @@ case_list:
     |   case_list CASE CHAR COLON statement_list         
     |   case_list CASE STRING COLON statement_list       
     |   case_list CASE BOOL COLON statement_list
-    |  /* NULL */                                 
+    |  /* Empty statement */                                 
     ;
 
 
