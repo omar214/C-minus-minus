@@ -76,14 +76,14 @@ extern int yylineno;
 
 
 program:
-         program statement
-        | /* Empty Statement */
-        ;
+        program statement
+    | /* Empty Statement */
+    ;
 
 statement_list:
-          statement                                                                        
-        | statement_list statement                                                              
-        ;
+        statement                                                                        
+    |   statement_list statement                                                              
+    ;
 
 data_type:
         INT_TYPE   
@@ -95,39 +95,40 @@ data_type:
     
 
 statement:
-          SEMICOLON                                                                                 
-        | expr SEMICOLON                                                                            
+        SEMICOLON                                                                                 
+    |   expr SEMICOLON                                                                            
 
-        /* Declaration & Assignment */
-        | data_type IDENTIFIER SEMICOLON                                                                   
-        | data_type IDENTIFIER ASSIGNMENT expr SEMICOLON                                                   
-        | CONST data_type IDENTIFIER ASSIGNMENT expr SEMICOLON                                             
-        | IDENTIFIER ASSIGNMENT expr SEMICOLON 
-        | enum_statement                                                                                           
+    /* Declaration & Assignment */
+    |   data_type IDENTIFIER SEMICOLON                                                                   
+    |   data_type IDENTIFIER ASSIGNMENT expr SEMICOLON                                                   
+    |   CONST data_type IDENTIFIER ASSIGNMENT expr SEMICOLON                                             
+    |   IDENTIFIER ASSIGNMENT expr SEMICOLON 
+    |   enum_statement                                                                                           
 
-        /* Loop statment */
-        | WHILE '(' expr ')' statement                                                             
-        | DO statement WHILE '(' expr ')' SEMICOLON                                                      
-        | FOR '(' IDENTIFIER ASSIGNMENT expr SEMICOLON expr SEMICOLON IDENTIFIER ASSIGNMENT expr ')' statement     
-                        
-        /*  IF statment*/
-        | IF '(' expr ')' statement %prec IFX                                                      
-        | IF '(' expr ')' statement ELSE statement                                                      
+    /* Loop statment */
+    |   WHILE '(' expr ')' statement                                                             
+    |   DO statement WHILE '(' expr ')' SEMICOLON                                                      
+    |   FOR '(' IDENTIFIER ASSIGNMENT expr SEMICOLON expr SEMICOLON IDENTIFIER ASSIGNMENT expr ')' statement     
+                    
+    /*  IF statment*/
+    |   IF '(' expr ')' statement %prec IFX                                                      
+    |   IF '(' expr ')' statement ELSE statement                                                      
 
-        | SWITCH '(' IDENTIFIER ')' '{' case_list case_default '}'                              
-        | BREAK SEMICOLON
+    /* Switch statement */
+    |   SWITCH '(' IDENTIFIER ')' '{' case_list case_default '}'                              
+    |   BREAK SEMICOLON
 
-        /* Function Statement */
-        | data_type IDENTIFIER function_arguements_list '{' function_statement_list '}'                                      
-        | VOID IDENTIFIER function_arguements_list '{' statement_list '}'                                           
-        | VOID IDENTIFIER function_arguements_list '{' '}'   
+    /* Function Statement */
+    |   data_type IDENTIFIER function_arguements_list '{' function_statement_list '}'                                      
+    |   VOID IDENTIFIER function_arguements_list '{' statement_list '}'                                           
+    |   VOID IDENTIFIER function_arguements_list '{' '}'   
 
-        /* Block Statement */
-        | '{' statement_list '}'                                                                   
-        | '{' '}'                                                                             
-        |   error SEMICOLON                                                                         
-        |   error '}'                                                                         
-        ;
+    /* Block Statement */
+    |   '{' statement_list '}'                                                                   
+    |   '{' '}'                                                                             
+    |   error SEMICOLON                                                                         
+    |   error '}'                                                                         
+    ;
 
 
 enum_arguments:
@@ -153,50 +154,50 @@ case_default:
     ;
 
 expr:
-    INT                                                                                  
-    | FLOAT                                                                                  
-    | CHAR                                                                                   
-    | STRING                                                                                 
-    | BOOL                                                                           
-    | IDENTIFIER                                                                             
-    | SUB expr %prec UMINUS                                                                
-    | NOT expr                                                                               
+        INT                                                                                  
+    |   FLOAT                                                                                  
+    |   CHAR                                                                                   
+    |   STRING                                                                                 
+    |   BOOL                                                                           
+    |   IDENTIFIER                                                                             
+    |   SUB expr %prec UMINUS                                                                
+    |   NOT expr                                                                               
     /* Mathematical */
-    | expr ADD expr                                                                         
-    | expr SUB expr                                                                        
-    | expr MUL expr                                                                          
-    | expr DIV expr                                                                          
-    | expr MOD expr        
+    |   expr ADD expr                                                                         
+    |   expr SUB expr                                                                        
+    |   expr MUL expr                                                                          
+    |   expr DIV expr                                                                          
+    |   expr MOD expr        
 
     /* Logical */
-    | expr LT expr                                                                            
-    | expr GT expr                                                                            
-    | expr GTE expr                                                                           
-    | expr LTE expr                                                                           
-    | expr NOT_EQUAL expr                                                                        
-    | expr EQUAL_TO expr                                                                         
-    | expr AND expr                                                                          
-    | expr OR expr
+    |   expr LT expr                                                                            
+    |   expr GT expr                                                                            
+    |   expr GTE expr                                                                           
+    |   expr LTE expr                                                                           
+    |   expr NOT_EQUAL expr                                                                        
+    |   expr EQUAL_TO expr                                                                         
+    |   expr AND expr                                                                          
+    |   expr OR expr
     
     /* function call or grouped */                                                                        /*  */
-    | IDENTIFIER function_call                                                                   
-    | '(' expr ')'                                                                           
+    |   IDENTIFIER function_call                                                                   
+    |   '(' expr ')'                                                                           
     ;
 
 
 function_statement_list:
         RETURN expr SEMICOLON                                                                  
-    | statement function_statement_list                                                              
+    |   statement function_statement_list                                                              
     ;
 
 function_arguements:
-          data_type IDENTIFIER                                                                  
-        | data_type IDENTIFIER COMMA function_arguements                                                
-        ;
+        data_type IDENTIFIER                                                                  
+    |   data_type IDENTIFIER COMMA function_arguements                                                
+    ;
 
 function_arguements_list:
-    '(' function_arguements ')'                                                            
-    | '(' ')'                                                                        
+        '(' function_arguements ')'                                                            
+    |   '(' ')'                                                                        
 ;
 
 function_arguements_call:
