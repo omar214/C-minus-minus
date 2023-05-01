@@ -41,6 +41,7 @@ OTHERS          .
 "bool"          {if(debug) printf("data_type %s\n", yytext); return BOOL_TYPE;  }
 "const"         {if(debug) printf("data_type %s\n", yytext); return CONST; }
 "void"          {if(debug) printf("data_type %s\n", yytext); return VOID; }
+"enum"          {if(debug) printf("ENUM %s\n", yytext); return ENUM; }
 
     /* Reserved Keywords */
 "if"            {if(debug)  printf("if\n"); return IF;}

@@ -42,7 +42,7 @@ extern int yylineno;
 
 // Data Types
 %token INT_TYPE FLOAT_TYPE CHAR_TYPE STRING_TYPE BOOL_TYPE CONST VOID
-
+%token ENUM
 
 // Values
 // TODO: specify the types & based on representation
@@ -99,7 +99,8 @@ stmt:
         | type IDENTIFIER SEMICOLON                                                                   
         | type IDENTIFIER ASSIGNMENT expr SEMICOLON                                                   
         | CONST type IDENTIFIER ASSIGNMENT expr SEMICOLON                                             
-        | IDENTIFIER ASSIGNMENT expr SEMICOLON                                                        
+        | IDENTIFIER ASSIGNMENT expr SEMICOLON 
+        | enum_statement                                                                                           
 
         | WHILE '(' expr ')' stmt                                                             
         | DO stmt WHILE '(' expr ')' SEMICOLON                                                      
@@ -119,6 +120,15 @@ stmt:
         |   error '}'                                                                         
         ;
 
+
+enum_arguments:
+        enum_arguments COMMA IDENTIFIER
+    |   IDENTIFIER
+    ;
+
+enum_statement:
+        ENUM '{' enum_arguments '}' IDENTIFIER SEMICOLON
+    ;
 
 case_list:
         case_list CASE INT COLON stmt_list      
