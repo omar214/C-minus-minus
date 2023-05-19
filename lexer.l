@@ -4,16 +4,17 @@
     #include<stdio.h>
     #include <stdarg.h> 
     #include <string.h>
+    #include <stdbool.h> // for boolean
 
     // Tokens include
     #include "y.tab.h"
+    #include"parser.h"
 
     // Function prototype
     void yyerror(char *);
     // #define debug_token(str) if(debug) printf("%s  %s\n", str, yytext); 
 
     // Global variables
-    int yy_lineno = 1;
     int debug = 0;
 %}
 
@@ -81,37 +82,61 @@ OTHERS          .
 ">="            { return GTE;}
 
 
-"true"          {  yylval= 1;  return BOOL;}
-"false"         { yylval= 0; return BOOL;}
+"true"              {  yylval.iValue = 1;  return BOOL;}
+"false"             {  yylval.iValue = 0; return BOOL;}
 
     /* String Values */
-{STRING_VALUE}    {return STRING;}
+{STRING_VALUE}      {
+                        // copy the string value to yylval.sValue
+                        yylval.sValue = strdup(yytext+1); // +1 to remove the first " || double quote
+
+                        // remove the last double quote
+                        int lastIdx = strlen(yylval.sValue) - 1;
+                        yylval.sValue[lastIdx] = '\0';
+                        
+                        // return the token
+                        return STRING;
+                    }   
 
     /* Character Values */
-{CHAR_VALUE}    {return CHAR;}
+{CHAR_VALUE}        {
+                        // 1 to neglect single quotes
+                        yylval.cValue = yytext[1];
+                        return CHAR;
+                    }
 
     /* Integer Values */
-{INT_VALUE}   { return INT;}
+{INT_VALUE}         { 
+                        yylval.iValue = atoi(yytext);
+                        return INT;
+                    }
 
     /* Floating Values */
-{FLOAT_VALUE}  {return FLOAT;}
+{FLOAT_VALUE}       {
+                        yylval.fValue = atof(yytext);
+                        return FLOAT;
+                    }
 
     /* Identifiers */
-{IDENTIFIER}  {return IDENTIFIER;}
+{IDENTIFIER}        {
+                        yylval.sIndex = malloc(strlen(yytext));
+                        strcpy(yylval.sIndex, yytext); 
+                        return IDENTIFIER;
+                    }
 
     /* Punctuators */
-";"             { return SEMICOLON;}
-","             { return COMMA; }
-":"             { return COLON; }
+";"                 { return SEMICOLON;}
+","                 { return COMMA; }
+":"                 { return COLON; }
 
-    /* special characters */
-{SPECIAL_CHAR}         {return *yytext;}
+    /* special characters => mainly braces */
+{SPECIAL_CHAR}      {return *yytext;}
 
     /* whitespace */
 {WHITESPACE}          ;
 
     /* new line */
-{NEWLINE}              { yy_lineno++; }
+{NEWLINE}              { yylineno++; }
 
     /* comments */
 {SINGLE_COMMENT}        ;
