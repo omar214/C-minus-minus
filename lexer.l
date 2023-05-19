@@ -36,50 +36,50 @@ OTHERS          .
 
 %%
     /* Reserved Data Types */
-"int"           {return INT_TYPE; }
-"float"         {return FLOAT_TYPE; }
-"string"        {return STRING_TYPE; }
-"char"          {return CHAR_TYPE; }
-"bool"          {return BOOL_TYPE;  }
-"const"         {return CONST; }
-"void"          {return VOID; }
-"enum"          {return ENUM; }
+"int"               {return INT_TYPE; }
+"float"             {return FLOAT_TYPE; }
+"string"            {return STRING_TYPE; }
+"char"              {return CHAR_TYPE; }
+"bool"              {return BOOL_TYPE;  }
+"const"             {return CONST; }
+"void"              {return VOID; }
+"enum"              {return ENUM; }
 
     /* Reserved Keywords */
-"if"            { return IF;}
-"else"          { return ELSE;}
+"if"                { return IF;}
+"else"              { return ELSE;}
 
-"switch"        { return SWITCH;}
-"case"          { return CASE;}
-"default"       { return DEFAULT;}
+"switch"            { return SWITCH;}
+"case"              { return CASE;}
+"default"           { return DEFAULT;}
 
-"while"         { return WHILE;}
-"break"         { return BREAK;}
+"while"             { return WHILE;}
+"break"             { return BREAK;}
 
-"for"           { return FOR;}
-"do"            { return DO;}
-"return"        { return RETURN;}
+"for"               { return FOR;}
+"do"                { return DO;}
+"return"            { return RETURN;}
 
     /* Mathematical Operators */
-"="             { return ASSIGNMENT;}
-"+"             { return ADD;}
-"-"             { return SUB;}
-"*"             { return MUL;}
-"/"             { return DIV;}
-"%"             { return MOD;}
+"="                 { return ASSIGNMENT;}
+"+"                 { return ADD;}
+"-"                 { return SUB;}
+"*"                 { return MUL;}
+"/"                 { return DIV;}
+"%"                 { return MOD;}
 
     /* Logical Operators */
-"&&"            { return AND;}
-"||"            { return OR;}
-"!"             { return NOT;}
+"&&"                { return AND;}
+"||"                { return OR;}
+"!"                 { return NOT;}
 
     /* Relational Operators */
-"=="            { return EQUAL_TO;}
-"!="            { return NOT_EQUAL; }
-"<"             { return LT;}
-">"             { return GT;}
-"<="            { return LTE; }
-">="            { return GTE;}
+"=="                { return EQUAL_TO;}
+"!="                { return NOT_EQUAL; }
+"<"                 { return LT;}
+">"                 { return GT;}
+"<="                { return LTE; }
+">="                { return GTE;}
 
 
 "true"              {  yylval.iValue = 1;  return BOOL;}
@@ -136,7 +136,7 @@ OTHERS          .
 {WHITESPACE}          ;
 
     /* new line */
-{NEWLINE}              { yylineno++; }
+{NEWLINE}           { yylineno++; }
 
     /* comments */
 {SINGLE_COMMENT}        ;
