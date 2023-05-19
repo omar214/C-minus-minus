@@ -9,6 +9,7 @@
 
 // Header Files
 #include "parser.h"
+#include "nodes.h"
 
 // User-defined Prototype
 
@@ -27,16 +28,7 @@ extern int debug ;
 extern int yylineno;
 
 // routines
-nodeType *opr(int oper, int nops, ...);     // for operations
-nodeType *id(char* id);                     // for identifiers
-nodeType *typ(conEnum value);               // for types defining
-nodeType *con();
-nodeType *conInt(int value);                // to add integer value
-nodeType *conFloat(float value);            // to add float value
-nodeType *conBool(bool value);
-nodeType *conChar(char value);
-nodeType *conString(char* value);
-void freeNode(nodeType *p);
+
 
 int execute(nodeType *p, FILE * outFile);   // to execute the program code
 FILE* assembly;                             // the write the assembly in
@@ -116,49 +108,49 @@ program:
 
 statement_list:
         statement                               { $$ = $1; }             
-    |   statement_list statement                { $$ = opr(';', 2, $1, $2); }                  
+    |   statement_list statement                { $$ = create_oper_node(';', 2, $1, $2); }                  
     ;
 
 data_type: 
-        INT_TYPE            { $$ =  typ(typeInt); } 
-    |   FLOAT_TYPE          { $$ =  typ(typeFloat); }
-    |   CHAR_TYPE           { $$ =  typ(typeChar); }
-    |   BOOL_TYPE           { $$ =  typ(typeBool); }
-    |   STRING_TYPE         { $$ =  typ(typeString); }
+        INT_TYPE            { $$ =  create_type_node(typeInt); } 
+    |   FLOAT_TYPE          { $$ =  create_type_node(typeFloat); }
+    |   CHAR_TYPE           { $$ =  create_type_node(typeChar); }
+    |   BOOL_TYPE           { $$ =  create_type_node(typeBool); }
+    |   STRING_TYPE         { $$ =  create_type_node(typeString); }
     ;
     
 
 statement:
-        SEMICOLON                               { $$ = opr(';', 2, NULL, NULL); }                                                   
+        SEMICOLON                               { $$ = create_oper_node(';', 2, NULL, NULL); }                                                   
     |   expr SEMICOLON                          { $$ = $1; }                                                                            
 
     /* Declaration & Assignment */
-    |   data_type IDENTIFIER SEMICOLON                                       { $$ = opr('d', 2, $1, id($2)); }                                 
-    |   data_type IDENTIFIER ASSIGNMENT expr SEMICOLON                       { $$ = opr(ASSIGNMENT, 3, $1, id($2), $4); }                             
-    |   CONST data_type IDENTIFIER ASSIGNMENT expr SEMICOLON                 { $$ = opr(ASSIGNMENT,4,typ(typeConst),$2,id($3),$5); }                             
-    |   IDENTIFIER ASSIGNMENT expr SEMICOLON                                 { $$ = opr(ASSIGNMENT, 2, id($1), $3); } 
+    |   data_type IDENTIFIER SEMICOLON                                       { $$ = create_oper_node('d', 2, $1, create_identifier_node($2)); }                                 
+    |   data_type IDENTIFIER ASSIGNMENT expr SEMICOLON                       { $$ = create_oper_node(ASSIGNMENT, 3, $1, create_identifier_node($2), $4); }                             
+    |   CONST data_type IDENTIFIER ASSIGNMENT expr SEMICOLON                 { $$ = create_oper_node(ASSIGNMENT,4, create_type_node(typeConst),$2,create_identifier_node($3),$5); }                             
+    |   IDENTIFIER ASSIGNMENT expr SEMICOLON                                 { $$ = create_oper_node(ASSIGNMENT, 2, create_identifier_node($1), $3); } 
     |   enum_statement                                                                                           
 
     /* Loop statment */
-    |   WHILE '(' expr ')' statement                                                                              { $$ = opr(WHILE, 2, $3, $5); }
-    |   DO statement WHILE '(' expr ')' SEMICOLON                                                                 { $$ = opr(DO, 2, $2, $5); }
-    |   FOR '(' IDENTIFIER ASSIGNMENT expr SEMICOLON expr SEMICOLON IDENTIFIER ASSIGNMENT expr ')' statement      { $$ = opr(FOR,4,opr(ASSIGNMENT, 2, id($3), $5),$7,opr(ASSIGNMENT, 2, id($9), $11)    ,$13); }
+    |   WHILE '(' expr ')' statement                                                                              { $$ = create_oper_node(WHILE, 2, $3, $5); }
+    |   DO statement WHILE '(' expr ')' SEMICOLON                                                                 { $$ = create_oper_node(DO, 2, $2, $5); }
+    |   FOR '(' IDENTIFIER ASSIGNMENT expr SEMICOLON expr SEMICOLON IDENTIFIER ASSIGNMENT expr ')' statement      { $$ = create_oper_node(FOR,4,create_oper_node(ASSIGNMENT, 2, create_identifier_node($3), $5),$7,create_oper_node(ASSIGNMENT, 2, create_identifier_node($9), $11)    ,$13); }
                     
     /*  IF statment*/
-    |   IF '(' expr ')' statement %prec IFX       { $$ = opr(IF, 2, $3, $5); }                                                
-    |   IF '(' expr ')' statement ELSE statement  { $$ = opr(IF, 3, $3, $5, $7); }                                                      
+    |   IF '(' expr ')' statement %prec IFX       { $$ = create_oper_node(IF, 2, $3, $5); }                                                
+    |   IF '(' expr ')' statement ELSE statement  { $$ = create_oper_node(IF, 3, $3, $5, $7); }                                                      
 
     /* Switch statement */
-    |   SWITCH '(' IDENTIFIER ')' '{' case_list case_default '}'       { $$ = opr(SWITCH,3,id($3),$6,$7); }                         
-    |   BREAK SEMICOLON                                                { $$ = opr(BREAK,0); }
+    |   SWITCH '(' IDENTIFIER ')' '{' case_list case_default '}'       { $$ = create_oper_node(SWITCH,3,create_identifier_node($3),$6,$7); }                         
+    |   BREAK SEMICOLON                                                { $$ = create_oper_node(BREAK,0); }
 
     /* Function Statement */
-    |   data_type IDENTIFIER function_arguements_list '{' function_statement_list '}'            { $$ = opr(FUNCTION, 4, $1, id($2), $3, $5);}                           
-    |   VOID IDENTIFIER function_arguements_list '{' statement_list '}'                          { $$ = opr(VOIDFUNCTION, 3, id($2), $3, $5);}                  
-    |   VOID IDENTIFIER function_arguements_list '{' '}'                                         { $$ = opr(VOIDFUNCTION, 3, id($2), $3, NULL);}
+    |   data_type IDENTIFIER function_arguements_list '{' function_statement_list '}'            { $$ = create_oper_node(FUNCTION, 4, $1, create_identifier_node($2), $3, $5);}                           
+    |   VOID IDENTIFIER function_arguements_list '{' statement_list '}'                          { $$ = create_oper_node(VOIDFUNCTION, 3, create_identifier_node($2), $3, $5);}                  
+    |   VOID IDENTIFIER function_arguements_list '{' '}'                                         { $$ = create_oper_node(VOIDFUNCTION, 3, create_identifier_node($2), $3, NULL);}
 
     /* Block Statement */
-    |   '{' statement_list '}'                               { $$ = opr('s', 1, $2); }                                      
+    |   '{' statement_list '}'                               { $$ = create_oper_node('s', 1, $2); }                                      
     |   '{' '}'                                              { $$ = NULL; }                                 
     |   error SEMICOLON                                      { $$ = NULL; }                                     
     |   error '}'                                            { $$ = NULL; }                               
@@ -166,67 +158,67 @@ statement:
 
 
 enum_arguments:
-        enum_arguments COMMA IDENTIFIER     { $$ = opr(',', 2, $1, id($3)); } 
-    |   IDENTIFIER                          { $$ = opr(';', 2, NULL, NULL);} // TODO: check this
+        enum_arguments COMMA IDENTIFIER     { $$ = create_oper_node(',', 2, $1, create_identifier_node($3)); } 
+    |   IDENTIFIER                          { $$ = create_oper_node(';', 2, NULL, NULL);} // TODO: check this
     ;
 
 enum_statement:
-        ENUM '{' enum_arguments '}' IDENTIFIER SEMICOLON    { $$ = opr(ENUM, 2, $3, id($5)); } // TODO: check this
+        ENUM '{' enum_arguments '}' IDENTIFIER SEMICOLON    { $$ = create_oper_node(ENUM, 2, $3, create_identifier_node($5)); } // TODO: check this
     ;
 
 case_list:
-        case_list CASE INT COLON statement_list      { $$ = opr(CASE,3,$1,conInt($3),$5); } 
-    |   case_list CASE CHAR COLON statement_list     { $$ = opr(CASE,3,$1,conChar($3),$5); }     
-    |   case_list CASE STRING COLON statement_list   { $$ = opr(CASE,3,$1,conString($3),$5); }       
-    |   case_list CASE BOOL COLON statement_list     { $$ = opr(CASE,3,$1,conBool($3),$5);  }
+        case_list CASE INT COLON statement_list      { $$ = create_oper_node(CASE,3,$1,create_int_node($3),$5); } 
+    |   case_list CASE CHAR COLON statement_list     { $$ = create_oper_node(CASE,3,$1,create_char_node($3),$5); }     
+    |   case_list CASE STRING COLON statement_list   { $$ = create_oper_node(CASE,3,$1,create_string_node($3),$5); }       
+    |   case_list CASE BOOL COLON statement_list     { $$ = create_oper_node(CASE,3,$1,create_bool_node($3),$5);  }
     |  /* Empty statement */                         { $$ = NULL;  }
     ;
 
 
 case_default: 
-        DEFAULT COLON statement_list                       { $$ = opr(DEFAULT, 1, $3); };                                      
+        DEFAULT COLON statement_list                       { $$ = create_oper_node(DEFAULT, 1, $3); };                                      
     ;
 
 expr:
-        INT                     { $$ = conInt($1); }                      
-    |   FLOAT                   { $$ = conFloat($1); }                                                               
-    |   CHAR                    { $$ = conChar($1); }                                                               
-    |   STRING                  { $$ = conString($1); }                                                               
-    |   BOOL                    { $$ = conBool($1); }                                                       
-    |   IDENTIFIER              { $$ = id($1); }                
-    |   SUB expr %prec UMINUS   { $$ = opr(UMINUS, 1, $2); }                               
-    |   NOT expr                { $$ = opr(NOT, 1, $2); }                                                               
+        INT                     { $$ = create_int_node($1); }                      
+    |   FLOAT                   { $$ = create_float_node($1); }                                                               
+    |   CHAR                    { $$ = create_char_node($1); }                                                               
+    |   STRING                  { $$ = create_string_node($1); }                                                               
+    |   BOOL                    { $$ = create_bool_node($1); }                                                       
+    |   IDENTIFIER              { $$ = create_identifier_node($1); }                
+    |   SUB expr %prec UMINUS   { $$ = create_oper_node(UMINUS, 1, $2); }                               
+    |   NOT expr                { $$ = create_oper_node(NOT, 1, $2); }                                                               
     /* Mathematical */
-    |   expr ADD expr           { $$ = opr(ADD, 2, $1, $3); }                                                                         
-    |   expr SUB expr           { $$ = opr(SUB, 2, $1, $3); }                                                                     
-    |   expr MUL expr           { $$ = opr(MUL, 2, $1, $3); }                                                                       
-    |   expr DIV expr           { $$ = opr(DIV, 2, $1, $3); }                                                                       
-    |   expr MOD expr           { $$ = opr(MOD, 2, $1, $3); }     
+    |   expr ADD expr           { $$ = create_oper_node(ADD, 2, $1, $3); }                                                                         
+    |   expr SUB expr           { $$ = create_oper_node(SUB, 2, $1, $3); }                                                                     
+    |   expr MUL expr           { $$ = create_oper_node(MUL, 2, $1, $3); }                                                                       
+    |   expr DIV expr           { $$ = create_oper_node(DIV, 2, $1, $3); }                                                                       
+    |   expr MOD expr           { $$ = create_oper_node(MOD, 2, $1, $3); }     
 
     /* Logical */
-    |   expr LT expr            { $$ = opr(LT, 2, $1, $3); }                                                                     
-    |   expr GT expr            { $$ = opr(GT, 2, $1, $3); }                                                                     
-    |   expr GTE expr           { $$ = opr(GTE, 2, $1, $3); }                                                                     
-    |   expr LTE expr           { $$ = opr(LTE, 2, $1, $3); }                                                                     
-    |   expr NOT_EQUAL expr     { $$ = opr(NOT_EQUAL, 2, $1, $3); }                                                                        
-    |   expr EQUAL_TO expr      { $$ = opr(EQUAL_TO, 2, $1, $3); }                                                                        
-    |   expr AND expr           { $$ = opr(AND, 2, $1, $3); }                                                                    
-    |   expr OR expr            { $$ = opr(OR, 2, $1, $3); }
+    |   expr LT expr            { $$ = create_oper_node(LT, 2, $1, $3); }                                                                     
+    |   expr GT expr            { $$ = create_oper_node(GT, 2, $1, $3); }                                                                     
+    |   expr GTE expr           { $$ = create_oper_node(GTE, 2, $1, $3); }                                                                     
+    |   expr LTE expr           { $$ = create_oper_node(LTE, 2, $1, $3); }                                                                     
+    |   expr NOT_EQUAL expr     { $$ = create_oper_node(NOT_EQUAL, 2, $1, $3); }                                                                        
+    |   expr EQUAL_TO expr      { $$ = create_oper_node(EQUAL_TO, 2, $1, $3); }                                                                        
+    |   expr AND expr           { $$ = create_oper_node(AND, 2, $1, $3); }                                                                    
+    |   expr OR expr            { $$ = create_oper_node(OR, 2, $1, $3); }
     
-    /* function call or grouped */                                                                        /*  */
-    |   IDENTIFIER function_call        { $$ = opr('t', 2, id($1), $2);}                                                       
+    /* function call or grouped */
+    |   IDENTIFIER function_call        { $$ = create_oper_node('t', 2, create_identifier_node($1), $2);}                                                       
     |   '(' expr ')'                    { $$ = $2; }                                                   
     ;
 
 
 function_statement_list:
-        RETURN expr SEMICOLON               { $$ = opr(RETURN, 1, $2); }                                                     
-    |   statement function_statement_list   { $$ = opr(';', 2, $1, $2); }                                             
+        RETURN expr SEMICOLON               { $$ = create_oper_node(RETURN, 1, $2); }                                                     
+    |   statement function_statement_list   { $$ = create_oper_node(';', 2, $1, $2); }                                             
     ;
 
 function_arguements:
-        data_type IDENTIFIER                                  { $$ = opr('r', 2, $1, id($2)); }                                  
-    |   data_type IDENTIFIER COMMA function_arguements        { $$ = opr(';', 3, $1, id($2), $4); }                                          
+        data_type IDENTIFIER                                  { $$ = create_oper_node('r', 2, $1, create_identifier_node($2)); }                                  
+    |   data_type IDENTIFIER COMMA function_arguements        { $$ = create_oper_node(';', 3, $1, create_identifier_node($2), $4); }                                          
     ;
 
 function_arguements_list:
@@ -235,8 +227,8 @@ function_arguements_list:
 ;
 
 function_arguements_call:
-        expr                                    { $$ = opr('q', 1, $1 ); }                                       
-    |   function_arguements_call COMMA expr     { $$ = opr(':', 2, $1, $3); }                                                     
+        expr                                    { $$ = create_oper_node('q', 1, $1 ); }                                       
+    |   function_arguements_call COMMA expr     { $$ = create_oper_node(':', 2, $1, $3); }                                                     
     ;
 
 function_call:
@@ -246,124 +238,6 @@ function_call:
 
 
 %%
-
-
-nodeType *typ(conEnum type){
-    nodeType *p;
-
-    /* allocate node */
-    if ((p = malloc(sizeof(nodeType))) == NULL)
-        yyerror("out of memory");
-
-    /* copy information */
-    p->type = typeDef;
-    p->typ.type = type;
-
-    return p;
-}
-
-nodeType *con(){
-    nodeType *p;
-
-    /* allocate node */
-    if ((p = malloc(sizeof(nodeType))) == NULL)
-        yyerror("out of memory");
-
-    /* copy information */
-    p->type = typeCon;
-    return p;
-}
-
-nodeType *conInt(int value) {
-    nodeType *p = con();
-    p->con.type = typeInt;
-    p->con.iValue = value;
-    
-    return p;
-}
-
-nodeType *conFloat(float value) {
-    nodeType *p = con();
-
-    p->con.type = typeFloat;
-    p->con.fValue = value;
-
-    return p;
-}
-
-nodeType *conBool(bool value) {
-    nodeType *p = con();
-
-    p->con.type = typeBool;
-    p->con.iValue = value;
-
-    return p;
-}
-
-
-nodeType *conChar(char value) {
-    nodeType *p = con();
-
-    p->con.type = typeChar;
-    p->con.cValue = value;
-
-    return p;
-}
-
-nodeType *conString(char* value) {
-    nodeType *p = con();
-
-    p->con.type = typeString;
-    p->con.sValue = value;
-
-    return p;
-}
-
-
-nodeType *id(char* id) {
-    nodeType *p;
-
-    /* allocate node */
-    if ((p = malloc(sizeof(nodeType))) == NULL)
-        yyerror("out of memory");
-
-    /* copy information */
-    p->type = typeId;
-    p->id.id = id;
-
-    return p;
-}
-
-nodeType *opr(int oper, int nops, ...) {
-    va_list ap;
-    nodeType *p;
-    int i;
-
-    /* allocate node, extending op array */
-    if ((p = malloc(sizeof(nodeType) + (nops-1) * sizeof(nodeType *))) == NULL)
-        yyerror("out of memory");
-
-    /* copy information */
-    p->type = typeOpr;
-    p->opr.oper = oper;
-    p->opr.nops = nops;
-    va_start(ap, nops);
-    for (i = 0; i < nops; i++)
-        p->opr.op[i] = va_arg(ap, nodeType*);
-    va_end(ap);
-    return p;
-}
-
-void freeNode(nodeType *p) {
-    int i;
-
-    if (!p) return;
-    if (p->type == typeOpr) {
-        for (i = 0; i < p->opr.nops; i++)
-            freeNode(p->opr.op[i]);
-    }
-    free (p);
-}
 
 
 void yyerror(char *s) {
