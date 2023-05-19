@@ -1,5 +1,9 @@
 #pragma once
 
+/**
+ * @brief Node Type Enum
+ * whether this node is a constant, identifier, operation or type definition
+ */
 typedef enum { 
     typeCon,  // const 
     typeId,   // identifier
@@ -7,6 +11,12 @@ typedef enum {
     typeDef   // data type
 } nodeEnum;
 
+
+/**
+ * @brief Constant Type Enum
+ * used to identify the type of the constant con_node type
+ * 
+ */
 typedef enum { 
     typeInt, 
     typeFloat, 
@@ -14,43 +24,63 @@ typedef enum {
     typeChar, 
     typeBool, 
     typeConst, 
-    typeND,     // not defined
-    typeVoid    // void
-} conEnum; 
+    typeNotDefined,     // not defined
+    typeVoid            // void
+} conEnum;
 
-/* constants */
 
+/**
+ * @brief the const node type
+ * used to store values of expressions 
+ * 
+ */
 struct conNodeType{
-    conEnum type;        // type of the constant value ( used to assign value for the identifiers)
+    // this type is used to identify which variable in the union is used
+    conEnum type;        
 
-    /* constant values */
     union 
     {
-        int iValue; 
-        float fValue;
-        char* sValue;
-        char cValue;
+        int iValue;     // integer value
+        float fValue;   // float value
+        char* sValue;   // string value
+        char cValue;    // char value
     };
-    
 };
 
-/* identifiers */
+
+/**
+ * @brief Identifiers Node Type
+ * id the name of the identifier  
+ * 
+ */
 struct idNodeType{
-    char* id;   // pointer to the identifiers table
+    // the name of the identifier used to access the symbol table
+    char* id;   
 };
 
 
-/* operators */
+/**
+ * @brief Operators Node Type
+ * oper the operator
+ * nops the number of operands
+ * op the operands
+ * 
+ */
 struct oprNodeType {
     int oper;                 // operator 
     int nops;                 // num of operands
     struct nodeTypeTag *op[1];// operands, extended at runtime
 };
 
-/* types */
+
+/**
+ * @brief Types Node Type -> used in the variable declaration like
+ * int x;   -> int is the type here
+ * float y; -> float is the type here
+ */
 struct typeNodeType {
     conEnum type;                     
-} ;
+};
 
 
 typedef struct nodeTypeTag {
