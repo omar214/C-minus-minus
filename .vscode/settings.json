@@ -10,7 +10,13 @@
     "string": "cpp",
     "vector": "cpp",
     "string_view": "cpp",
-    "initializer_list": "cpp"
+    "initializer_list": "cpp",
+    "nodes.h": "c",
+    "operations.h": "c",
+    "symboltable.h": "c",
+    "parser.h": "c",
+    "compile.h": "c",
+    "y.tab.h": "c"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

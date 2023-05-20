@@ -1,3 +1,4 @@
+#pragma once
 // built in headers
 #include <stdio.h>
 #include <stdlib.h>
