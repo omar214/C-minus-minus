@@ -12,7 +12,10 @@ flex:
 
 compile:
 	@echo -e \n----------- Compiling both -----------
-	gcc  -o compiler.exe y.tab.c lex.yy.c
+	g++ -c symbolTable.cpp
+	gcc -c y.tab.c lex.yy.c
+	g++ -o compiler.exe symbolTable.o lex.yy.o y.tab.o
+	@ #g++ -o cpp.out symbolTable.o lex.yy.o y.tab.o
 
 compile_debug:
 	@echo -e \n----------- Compiling both -----------

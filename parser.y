@@ -11,6 +11,7 @@
 #include "parser.h"
 #include "nodes.h"
 #include "utils.h"
+#include "symbolTable.h"
 
 // User-defined Prototype
 
@@ -258,20 +259,19 @@ int main(int argc, char* argv[]) {
     char * outDirPath = argv[2];
     DIR * dir = open_dir(outDirPath);
 
-    // TODO: check if we need to create the table file here or in symTable file.h
-    /* char* symbolTablePath = malloc(strlen(argv[2])*50); */
-    /* sprintf(symbolTablePath ,  "%s/quadruples.txt", argv[2]); */
-
     // create the output files
     int strSize = strlen(argv[2]) * 100;
     char* errorFilePath = malloc(strSize);
     char* quadruplesPath = malloc(strSize);
+    char* symbolTablePath = malloc(strSize);
 
     sprintf(errorFilePath ,  "%s/errors.txt", outDirPath);
     sprintf(quadruplesPath ,  "%s/quadruples.txt", outDirPath);
+    sprintf(symbolTablePath ,  "%s/symbol_table.txt", argv[2]);
 
     quadrables_file = create_file(quadruplesPath);
     yyout = create_file(errorFilePath);
+    setTablePath(symbolTablePath);
 
     printf("debug: %d\n", debug);
     printf("----------------- start -----------------\n");
@@ -280,8 +280,10 @@ int main(int argc, char* argv[]) {
         debug = 0;
     #endif
     yyparse();
+    printSymbolTable();
     fclose(yyin);
     fclose(yyout);
+    clearTablePath();
     printf("\n----------------- Parse End -----------------\n");
     return 0;
 }

@@ -1,6 +1,16 @@
 {
   "files.associations": {
-    "ostream": "cpp"
+    "ostream": "cpp",
+    "iostream": "cpp",
+    "map": "cpp",
+    "unordered_map": "cpp",
+    "array": "cpp",
+    "deque": "cpp",
+    "list": "cpp",
+    "string": "cpp",
+    "vector": "cpp",
+    "string_view": "cpp",
+    "initializer_list": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }
