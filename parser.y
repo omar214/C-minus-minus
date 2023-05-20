@@ -12,6 +12,7 @@
 #include "nodes.h"
 #include "utils.h"
 #include "symbolTable.h"
+#include "operations.h"
 
 // User-defined Prototype
 
