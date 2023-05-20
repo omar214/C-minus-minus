@@ -13,7 +13,7 @@
 #include "utils.h"
 #include "symbolTable.h"
 #include "operations.h"
-
+#include "compile.h"
 // User-defined Prototype
 
 
@@ -34,7 +34,7 @@ extern FILE* yyout;
 FILE* quadrables_file;
 
 // routines
-int execute(nodeType *p, FILE * outFile);  
+void execute(nodeType *p);  
 
 
 // Global declared variables
@@ -103,8 +103,11 @@ int execute(nodeType *p, FILE * outFile);
 
 
 program:
-        program statement
-    | /* Empty Statement */ { $$ = NULL; }
+        program statement   {   
+                                execute($2); 
+                                // freeNode($2);
+                            }    
+    | /* Empty Statement */ { /* $$ = NULL; */ }
     ;
 
 statement_list:
@@ -270,9 +273,10 @@ int main(int argc, char* argv[]) {
     sprintf(quadruplesPath ,  "%s/quadruples.txt", outDirPath);
     sprintf(symbolTablePath ,  "%s/symbol_table.txt", argv[2]);
 
-    quadrables_file = create_file(quadruplesPath);
     yyout = create_file(errorFilePath);
+    quadrables_file = create_file(quadruplesPath);
     setTablePath(symbolTablePath);
+    setQuadrableFilePath(quadruplesPath, quadrables_file);
 
     printf("debug: %d\n", debug);
     printf("----------------- start -----------------\n");
@@ -285,6 +289,8 @@ int main(int argc, char* argv[]) {
     fclose(yyin);
     fclose(yyout);
     clearTablePath();
+    clearQuadrableFilePath();
+    fclose(quadrables_file);
     printf("\n----------------- Parse End -----------------\n");
     return 0;
 }

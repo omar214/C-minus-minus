@@ -16,7 +16,8 @@
     "symboltable.h": "c",
     "parser.h": "c",
     "compile.h": "c",
-    "y.tab.h": "c"
+    "y.tab.h": "c",
+    "dirent.h": "c"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }
