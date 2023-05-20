@@ -145,8 +145,8 @@ OTHERS          .
 
     /* others */
 {OTHERS}            { 
-                        printf("Error: Unknown token %s\n", yytext);
-                        yyerror("Unknown token found");
+                        // printf("Error: Unknown token %s\n", yytext);
+                        // yyerror("Unknown token found");
                         // exit(1);
                     }
 

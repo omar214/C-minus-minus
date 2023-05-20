@@ -10,6 +10,7 @@
 // Header Files
 #include "parser.h"
 #include "nodes.h"
+#include "utils.h"
 
 // User-defined Prototype
 
@@ -26,14 +27,12 @@ int yyparse(void);
 // Global Variables
 extern int debug ;
 extern int yylineno;
+extern FILE* yyin; 
+extern FILE* yyout;
+FILE* quadrables_file;
 
 // routines
-
-
-int execute(nodeType *p, FILE * outFile);   // to execute the program code
-FILE* assembly;                             // the write the assembly in
-extern FILE* yyin;                          // the input file
-extern FILE* yyout;                         // output file to save the errors 
+int execute(nodeType *p, FILE * outFile);  
 
 
 // Global declared variables
@@ -241,14 +240,39 @@ function_call:
 
 
 void yyerror(char *s) {
-    printf("\n----- Error -----\n");
-    fprintf(stderr, "%s Error at line [%d]\n", s , yylineno);
-    /* fprintf(yyout, "line [%d]: %s\n", yylineno, s);
-    fprintf(stdout, "line [%d]: %s\n", yylineno, s);
-     */
+    fprintf(yyout, "Error at line [%d]: %s\n", yylineno, s);
+    fprintf(stdout,"Error at line [%d]: %s\n", yylineno, s);
+
 }
 
-int main(void) {
+int main(int argc, char* argv[]) {
+    if(argc != 3){
+        printf("wrong Number of arguments \n");
+        exit(0);
+    }
+    // read the input file
+    yyin = read_file(argv[1]);
+    printf("File opened successfully\n");
+
+    // check if out directory exists
+    char * outDirPath = argv[2];
+    DIR * dir = open_dir(outDirPath);
+
+    // TODO: check if we need to create the table file here or in symTable file.h
+    /* char* symbolTablePath = malloc(strlen(argv[2])*50); */
+    /* sprintf(symbolTablePath ,  "%s/quadruples.txt", argv[2]); */
+
+    // create the output files
+    int strSize = strlen(argv[2]) * 100;
+    char* errorFilePath = malloc(strSize);
+    char* quadruplesPath = malloc(strSize);
+
+    sprintf(errorFilePath ,  "%s/errors.txt", outDirPath);
+    sprintf(quadruplesPath ,  "%s/quadruples.txt", outDirPath);
+
+    quadrables_file = create_file(quadruplesPath);
+    yyout = create_file(errorFilePath);
+
     printf("debug: %d\n", debug);
     printf("----------------- start -----------------\n");
     #if defined(YYDEBUG) && (YYDEBUG==1)
@@ -256,6 +280,8 @@ int main(void) {
         debug = 0;
     #endif
     yyparse();
-    printf("\n----------------- Parse End -----------------");
+    fclose(yyin);
+    fclose(yyout);
+    printf("\n----------------- Parse End -----------------\n");
     return 0;
 }
