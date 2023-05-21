@@ -176,7 +176,10 @@ struct conNodeType *getVariable(char *var_name, char **error) {
       if (!has_value) {
         *error = (char *)malloc(sizeof(char) * 100);
         strcpy(*error, "variable is not initialized");
+        printf("variable %s is not initialized\n", var_name);
       }
+      printf("variable %s is found\n type is %d value is %d\n", var_name,
+             variableNode->type, variableNode->iValue);
       return variableNode;
     }
     table_iterator = table_iterator->parent;
@@ -228,11 +231,12 @@ void printSymbolTable() {
       case typeChar:
         var_type_str = "Char";
         var_value_str = (it.second.first.cValue);
+        var_value_str = "'" + var_value_str + "'";
         break;
 
       case typeString:
         var_type_str = "String";
-        var_value_str = string(it.second.first.sValue);
+        var_value_str = '"' + string(it.second.first.sValue) + '"';
         break;
 
       case typeVoid:
@@ -256,8 +260,7 @@ void printSymbolTable() {
                       << var_type_str << "\tis_constant:\t" << is_const
                       << "\tis_initialized\t" << is_initialized << " \n";
   }
-  symbol_table_file
-      << "-------------------End Symbol Table-----------------\n\n\n"
-      << endl;
-  cout << "-------------------End Symbol Table-----------------\n\n\n" << endl;
+  symbol_table_file << "-------------------End Symbol Table-----------------\n"
+                    << endl;
+  cout << "-------------------End Symbol Table-----------------\n" << endl;
 }
