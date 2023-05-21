@@ -162,7 +162,7 @@ struct conNodeType *insertNewVariable(char *var_name, conEnum var_type,
  * @param error    the error message if there is an error
  * @return struct conNodeType* the node of the variable
  */
-struct conNodeType *getVariable(char *var_name, char **error) {
+struct conNodeType *getVariable(char *var_name, char **error, struct conNodeType** resultNode) {
   // intialize next table pointer
   symbol_table *table_iterator = &curr_global_table;
 
@@ -172,14 +172,15 @@ struct conNodeType *getVariable(char *var_name, char **error) {
                     table_iterator->symtable.end();
     if (is_found) {
       conNodeType *variableNode = &(table_iterator->symtable[var_name].first);
+      *resultNode = variableNode;
       bool has_value = table_iterator->symtable[var_name].second.second;
       if (!has_value) {
         *error = (char *)malloc(sizeof(char) * 100);
         strcpy(*error, "variable is not initialized");
         printf("variable %s is not initialized\n", var_name);
       }
-      printf("variable %s is found\n type is %d value is %d\n", var_name,
-             variableNode->type, variableNode->iValue);
+      // printf("variable %s is found\n type is %d value is %d\n", var_name, (*resultNode)->type, (*resultNode)->iValue);
+      // printf("variable %s is found\n type is %d value is %d\n", var_name, variableNode->type, variableNode->iValue);
       return variableNode;
     }
     table_iterator = table_iterator->parent;

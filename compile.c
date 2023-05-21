@@ -110,10 +110,15 @@ struct conNodeType *handle_def_node(nodeType *p) {
  * @param p the node to be handled
  * @return struct conNodeType*
  */
-struct conNodeType *handle_identifier_node(nodeType *p,
-                                           struct conNodeType *resultNode) {
+struct conNodeType *handle_identifier_node(nodeType *p, struct conNodeType **resultNode) {
   char *identifierName = p->id.id;
-  resultNode = getVariable(identifierName, &global_error);
+ 
+  //  get the variable from the symbol table
+  struct conNodeType *temp = malloc(sizeof(struct conNodeType *));
+  getVariable(identifierName, &global_error, &temp);
+
+  // assign the result node
+  *resultNode = temp;
 
   fprintf(quadrableFile, "\tpush\t%s\n",
           identifierName);  // push the identifier name to the stack
@@ -220,7 +225,7 @@ struct conNodeType *get_operand_value(nodeType *p) {
       return handle_const_node(p);
       break;
     case typeId:
-      handle_identifier_node(p, resultNode);
+      handle_identifier_node(p, &resultNode);
       return resultNode;
       break;
     case typeOpr:
@@ -265,16 +270,15 @@ struct conNodeType *handle_operation_node(nodeType *p) {
   switch (currOperation) {
       // int identifier;
     case DECLARE: {
-      
-			// get the type of the variable
-			struct conNodeType *declareTypeNode = ex(p->opr.op[0]);
+      // get the type of the variable
+      struct conNodeType *declareTypeNode = ex(p->opr.op[0]);
       conEnum varType = declareTypeNode->type;
 
-			// get the variable name
+      // get the variable name
       nodeType *declareIdNode = p->opr.op[1];
       char *varName = declareIdNode->id.id;
 
-			// insert the variable in the symbol table
+      // insert the variable in the symbol table
       resultNode = insertNewVariable(varName, varType, *declareTypeNode, false,
                                      false, &global_error);
       break;
@@ -450,7 +454,7 @@ struct conNodeType *ex(nodeType *p) {
       return handle_def_node(p);
       break;
     case typeId:
-      handle_identifier_node(p, resultNode);
+      handle_identifier_node(p, &resultNode);
       return resultNode;
       break;
     case typeOpr:

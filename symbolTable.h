@@ -59,7 +59,7 @@ struct conNodeType* insertNewVariable(char* var_name, conEnum var_type,
  * @param error    the error message if there is an error
  * @return struct conNodeType* the node of the variable
  */
-struct conNodeType* getVariable(char* var, char** error);
+struct conNodeType* getVariable(char* var, char** error, struct conNodeType** resultNode);
 
 /**
  * @brief print the symbol table

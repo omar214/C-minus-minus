@@ -46,7 +46,7 @@ struct conNodeType *handle_def_node(nodeType *p);
  * @param p the node to be handled
  * @return struct conNodeType*
  */
-struct conNodeType *handle_identifier_node(nodeType *p, struct conNodeType *resultNode);
+struct conNodeType *handle_identifier_node(nodeType *p, struct conNodeType **resultNode);
 
 bool is_binary_operation(int operation);
 

@@ -286,7 +286,7 @@ int main(int argc, char* argv[]) {
         debug = 0;
     #endif
     yyparse();
-    printSymbolTable();
+    /* printSymbolTable(); */
     fclose(yyin);
     fclose(yyout);
     clearTablePath();
