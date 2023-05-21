@@ -10,10 +10,10 @@ typedef struct functionLinkedList {
 
 functionLinkedList *functionListHeader = NULL;
 
-static int lbl;
-static int switch_lbl;
-static int case_lbl;
-static int reg;
+static int global_curr_label = 0;
+static int global_curr_reg = 0;
+static int global_switch_lbl = 0;
+static int global_case_lbl = 0;
 
 char *var;                // identifier name
 char *global_error = "";  // global variable to store any error message
@@ -110,9 +110,10 @@ struct conNodeType *handle_def_node(nodeType *p) {
  * @param p the node to be handled
  * @return struct conNodeType*
  */
-struct conNodeType *handle_identifier_node(nodeType *p, struct conNodeType **resultNode) {
+struct conNodeType *handle_identifier_node(nodeType *p,
+                                           struct conNodeType **resultNode) {
   char *identifierName = p->id.id;
- 
+
   //  get the variable from the symbol table
   struct conNodeType *temp = malloc(sizeof(struct conNodeType *));
   getVariable(identifierName, &global_error, &temp);
@@ -378,12 +379,90 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       break;
     }
     case WHILE: {
+      int start_while_label = global_curr_label++;
+      int end_while_label = global_curr_label++;
+      struct conNodeType *while_condition = p->opr.op[0];
+      struct conNodeType *while_body = p->opr.op[1];
+
+      // print the start label
+      fprintf(quadrableFile, "L%03d:\n", start_while_label);
+
+      // execute the condition
+      ex(while_condition);
+
+      // jumb to end_while if the condition is false
+      fprintf(quadrableFile, "\tjz L%03d\n", end_while_label);
+
+      // execute the body
+      ex(while_body);
+
+      // print the jump to the start
+      fprintf(quadrableFile, "\tjmp L%03d\n", start_while_label);
+
+      // print the end label
+      fprintf(quadrableFile, "L%03d:\n", end_while_label);
+
       break;
     }
     case DO: {
+      int start_do_while_label = global_curr_label++;
+      int end_do_while_label = global_curr_label++;
+      struct conNodeType *do_while_body = p->opr.op[0];
+      struct conNodeType *do_while_condition = p->opr.op[1];
+
+      // print the start label
+      fprintf(quadrableFile, "L%03d:\n", start_do_while_label);
+
+      // execute the  body
+      ex(do_while_body);
+
+      // execute the condition
+      ex(do_while_condition);
+
+      // jumb to end_while if the condition is false
+      fprintf(quadrableFile, "\tjz L%03d\n", end_do_while_label);
+
+      // print the jump to the start
+      fprintf(quadrableFile, "\tjmp L%03d\n", start_do_while_label);
+
+      // print the end label
+      fprintf(quadrableFile, "L%03d:\n", end_do_while_label);
+
       break;
     }
     case FOR: {
+      int start_for_label = global_curr_label++;
+      int end_for_label = global_curr_label++;
+
+      struct conNodeType *for_init_statement = p->opr.op[0];
+      struct conNodeType *for_condition_statement = p->opr.op[1];
+      struct conNodeType *for_update_statement = p->opr.op[2];
+      struct conNodeType *for_body_statement = p->opr.op[3];
+
+      // execute the init statement
+      ex(for_init_statement);
+
+      // print the start label
+      fprintf(quadrableFile, "L%03d:\n", start_for_label);
+
+      // execute the condition
+      ex(for_condition_statement);
+
+      // jumb to end_for if the condition is false
+      fprintf(quadrableFile, "\tjz\tL%03d\n", end_for_label);
+
+      // execute the body
+      ex(for_body_statement);
+
+      // execute the update statement
+      ex(for_update_statement);
+
+      // jump to the start
+      fprintf(quadrableFile, "\tjmp\tL%03d\n", start_for_label);
+
+      // print the end label
+      fprintf(quadrableFile, "L%03d:\n", end_for_label);
+
       break;
     }
     case IF: {
