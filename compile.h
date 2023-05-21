@@ -1,21 +1,21 @@
 #pragma once
 // built in headers
+#include <dirent.h>   // for directory
+#include <stdarg.h>   // to accept variable number of arguments
+#include <stdbool.h>  // for boolean
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <dirent.h>  // for directory
-#include <stdarg.h>  // to accept variable number of arguments
-#include <stdbool.h> // for boolean
 
 // user defined headers
-#include "y.tab.h"
 #include "parser.h"
+#include "y.tab.h"
 
 /**
  * @brief Set the Quadrable File Path object & open the file
  * @param filePath the path of the file
  */
-void setQuadrableFilePath(char * filePath , FILE * file);
+void setQuadrableFilePath(char *filePath, FILE *file);
 
 /**
  * @brief Clear the Quadrable File Path object & close the file
@@ -24,7 +24,8 @@ void setQuadrableFilePath(char * filePath , FILE * file);
 void clearQuadrableFilePath();
 
 /**
- * @brief Function that handles the constant nodes whether , integer , float , bool , char and string
+ * @brief Function that handles the constant nodes whether , integer , float ,
+ * bool , char and string
  *
  * @param p the node to be handled
  * @return struct conNodeType*
