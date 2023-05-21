@@ -19,10 +19,11 @@
 struct conNodeType* handle_operations(
   struct conNodeType* operand1, 
   struct conNodeType* operand2, 
-  int operator_type
+  int operator_type,
+  struct conNodeType* resultNode
 ) {
 
-    if(operand1 == NULL && operand2 == NULL) {
+    if(operand1 == NULL || operand2 == NULL) {
         yyerror("ERROR: NULL operand!\n");
         return NULL;
     }
@@ -36,7 +37,6 @@ struct conNodeType* handle_operations(
     }
     
   
-    struct conNodeType* resultNode = malloc(sizeof(struct conNodeType*));
     bool isFloat = false;
     if(operand1->type == typeFloat || operand2->type == typeFloat) {
       isFloat = true;
@@ -114,20 +114,20 @@ struct conNodeType* handle_operations(
 
       case OR:
         //TODO: check if we need this check or we can allow logical operations on int
-        if(operand1->type != typeBool || operand2->type != typeBool) {
-          yyerror("ERROR: can't make logical operations to non-bool operands\n");
-          return NULL;
-        }
+        // if(operand1->type != typeBool || operand2->type != typeBool) {
+        //   yyerror("ERROR: can't make logical operations to non-bool operands\n");
+        //   return NULL;
+        // }
         resultNode->type = typeBool;
         resultNode->iValue = (int)opr1_value || (int)opr2_value;
         break;
 
       case AND:
         //TODO: check if we need this check or we can allow logical operations on int
-        if(operand1->type != typeBool || operand2->type != typeBool) {
-          yyerror("ERROR: can't make logical operations to non-bool operands\n");
-          return NULL;
-        }
+        // if(operand1->type != typeBool || operand2->type != typeBool) {
+        //   yyerror("ERROR: can't make logical operations to non-bool operands\n");
+        //   return NULL;
+        // }
         resultNode->type = typeBool;
         resultNode->iValue = (int)opr1_value && (int)opr2_value;
         break;

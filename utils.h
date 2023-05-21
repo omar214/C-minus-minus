@@ -11,7 +11,7 @@
 FILE * read_file(char * path) {
     FILE * file = fopen(path, "r");
     if (file == NULL) {
-        printf("Error: File not found\n");
+        printf("Error: File %s not found\n", path);
         exit(0);
     }
     return file;
@@ -20,7 +20,7 @@ FILE * read_file(char * path) {
 FILE * create_file(char * path) {
     FILE * file = fopen(path, "w");
     if (file == NULL) {
-        printf("Error: File not found\n");
+        printf("Error: File %s not found\n", path);
         exit(0);
     }
     return file;

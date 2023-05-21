@@ -49,7 +49,6 @@ void clearQuadrableFilePath()
 struct conNodeType *handle_const_node(nodeType *p)
 {
   struct conNodeType *resultNode = malloc(sizeof(struct conNodeType *));
-  resultNode->type = typeNotDefined;
 
   conEnum currentConType = p->con.type;
   char *string_to_write = malloc(sizeof(char) * 100);
@@ -233,7 +232,6 @@ struct conNodeType *get_operand_value(nodeType *p)
     break;
 
   default:
-    return NULL;
     break;
   }
 }
@@ -247,19 +245,17 @@ struct conNodeType *get_operand_value(nodeType *p)
 struct conNodeType *handle_operation_node(nodeType *p)
 {
   struct conNodeType *resultNode = malloc(sizeof(struct conNodeType *));
-  resultNode->type = typeNotDefined;
-
-
   int currOperation = p->opr.oper;
+  
+  
   if (is_binary_operation(currOperation))
   {
     struct conNodeType *operand1 = get_operand_value(p->opr.op[0]);
     struct conNodeType *operand2 = get_operand_value(p->opr.op[1]);
-    resultNode = handle_operations(operand1, operand2, currOperation);
+    handle_operations(operand1, operand2, currOperation , resultNode);
 
     fprintf(quadrableFile, "%s", get_operation_string(currOperation));
-    // return resultNode;
-    return NULL;
+    return resultNode;
   }
 
   bool isUnaryOperation = currOperation == UMINUS || currOperation == NOT;

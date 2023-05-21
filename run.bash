@@ -1,2 +1,4 @@
 make build
-./compiler.exe tests/if.cpp tests/
+./compiler.exe tests/expressions.cpp tests/
+# gdb compiler.exe
+# run tests/expressions.cpp tests/
