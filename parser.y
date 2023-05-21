@@ -96,6 +96,7 @@ void execute(nodeType *p);
 
 
 %token FUNCTION VOIDFUNCTION FUNCVARLIST CALLVARLIST CALL SYMBOLTABLE
+%token DECLARE NEW_SCOPE STATMENT_SEPARATOR
 %type <nPtr> statement statement_list expr function_statement_list function_arguements_list function_arguements_call function_call enum_statement case_list case_default enum_arguments data_type program
 %type <nPtr> function_arguements 
 
@@ -112,7 +113,7 @@ program:
 
 statement_list:
         statement                               { $$ = $1; }             
-    |   statement_list statement                { $$ = create_oper_node(';', 2, $1, $2); }                  
+    |   statement_list statement                { $$ = create_oper_node(STATMENT_SEPARATOR, 2, $1, $2); }                  
     ;
 
 data_type: 
@@ -125,11 +126,11 @@ data_type:
     
 
 statement:
-        SEMICOLON                               { $$ = create_oper_node(';', 2, NULL, NULL); }                                                   
+        SEMICOLON                               { $$ = create_oper_node(STATMENT_SEPARATOR, 2, NULL, NULL); }                                                   
     |   expr SEMICOLON                          { $$ = $1; }                                                                            
 
     /* Declaration & Assignment */
-    |   data_type IDENTIFIER SEMICOLON                                       { $$ = create_oper_node('d', 2, $1, create_identifier_node($2)); }                                 
+    |   data_type IDENTIFIER SEMICOLON                                       { $$ = create_oper_node(DECLARE, 2, $1, create_identifier_node($2)); }                                 
     |   data_type IDENTIFIER ASSIGNMENT expr SEMICOLON                       { $$ = create_oper_node(ASSIGNMENT, 3, $1, create_identifier_node($2), $4); }                             
     |   CONST data_type IDENTIFIER ASSIGNMENT expr SEMICOLON                 { $$ = create_oper_node(ASSIGNMENT,4, create_type_node(typeConst),$2,create_identifier_node($3),$5); }                             
     |   IDENTIFIER ASSIGNMENT expr SEMICOLON                                 { $$ = create_oper_node(ASSIGNMENT, 2, create_identifier_node($1), $3); } 
@@ -154,7 +155,7 @@ statement:
     |   VOID IDENTIFIER function_arguements_list '{' '}'                                         { $$ = create_oper_node(VOIDFUNCTION, 3, create_identifier_node($2), $3, NULL);}
 
     /* Block Statement */
-    |   '{' statement_list '}'                               { $$ = create_oper_node('s', 1, $2); }                                      
+    |   '{' statement_list '}'                               { $$ = create_oper_node(NEW_SCOPE, 1, $2); }                                      
     |   '{' '}'                                              { $$ = NULL; }                                 
     |   error SEMICOLON                                      { $$ = NULL; }                                     
     |   error '}'                                            { $$ = NULL; }                               
@@ -163,7 +164,7 @@ statement:
 
 enum_arguments:
         enum_arguments COMMA IDENTIFIER     { $$ = create_oper_node(',', 2, $1, create_identifier_node($3)); } 
-    |   IDENTIFIER                          { $$ = create_oper_node(';', 2, NULL, NULL);} // TODO: check this
+    |   IDENTIFIER                          { $$ = create_oper_node(STATMENT_SEPARATOR, 2, NULL, NULL);} // TODO: check this
     ;
 
 enum_statement:
@@ -217,12 +218,12 @@ expr:
 
 function_statement_list:
         RETURN expr SEMICOLON               { $$ = create_oper_node(RETURN, 1, $2); }                                                     
-    |   statement function_statement_list   { $$ = create_oper_node(';', 2, $1, $2); }                                             
+    |   statement function_statement_list   { $$ = create_oper_node(STATMENT_SEPARATOR, 2, $1, $2); }                                             
     ;
 
 function_arguements:
         data_type IDENTIFIER                                  { $$ = create_oper_node('r', 2, $1, create_identifier_node($2)); }                                  
-    |   data_type IDENTIFIER COMMA function_arguements        { $$ = create_oper_node(';', 3, $1, create_identifier_node($2), $4); }                                          
+    |   data_type IDENTIFIER COMMA function_arguements        { $$ = create_oper_node(STATMENT_SEPARATOR, 3, $1, create_identifier_node($2), $4); }                                          
     ;
 
 function_arguements_list:

@@ -110,20 +110,21 @@ struct conNodeType *handle_def_node(nodeType *p) {
  * @param p the node to be handled
  * @return struct conNodeType*
  */
-struct conNodeType *handle_identifier_node(nodeType *p) {
+struct conNodeType *handle_identifier_node(nodeType *p,
+                                           struct conNodeType *resultNode) {
   char *identifierName = p->id.id;
-  struct conNodeType *resultNode = getVariable(identifierName, &global_error);
+  resultNode = getVariable(identifierName, &global_error);
 
   fprintf(quadrableFile, "\tpush\t%s\n",
           identifierName);  // push the identifier name to the stack
   bool hasError = strcmp(global_error, "") != 0 || resultNode == NULL;
   if (hasError) {
-    // printf("ERROR: %s\n", global_error);
+    printf("ERROR: %s\n", global_error);
     yyerror(global_error);
     global_error = "";
   }
 
-  return resultNode;
+  return NULL;
 }
 
 /**
@@ -212,12 +213,15 @@ char *get_operation_string(int operand) {
  * @return struct conNodeType* the value of the operand
  */
 struct conNodeType *get_operand_value(nodeType *p) {
+  struct conNodeType *resultNode = malloc(sizeof(struct conNodeType *));
+
   switch (p->type) {
     case typeCon:
       return handle_const_node(p);
       break;
     case typeId:
-      return handle_identifier_node(p);
+      handle_identifier_node(p, resultNode);
+      return resultNode;
       break;
     case typeOpr:
       // in case of nested operations
@@ -259,6 +263,116 @@ struct conNodeType *handle_operation_node(nodeType *p) {
   }
 
   switch (currOperation) {
+      // int identifier;
+    case DECLARE: {
+      
+			// get the type of the variable
+			struct conNodeType *declareTypeNode = ex(p->opr.op[0]);
+      conEnum varType = declareTypeNode->type;
+
+			// get the variable name
+      nodeType *declareIdNode = p->opr.op[1];
+      char *varName = declareIdNode->id.id;
+
+			// insert the variable in the symbol table
+      resultNode = insertNewVariable(varName, varType, *declareTypeNode, false,
+                                     false, &global_error);
+      break;
+    }
+    case ASSIGNMENT: {
+      int numOfOps = p->opr.nops;
+
+      // updating var
+      // var = expr;
+      if (numOfOps == 2) {
+        // get the variable name
+        char *varName = p->opr.op[0]->id.id;
+
+        // get the variable value (expr)
+        struct conNodeType *varValue = ex(p->opr.op[1]);
+
+        if (!varValue) {
+          yyerror("ERROR: Variable value is not valid");
+          return NULL;
+        }
+
+        // we used typeNotDefined to indicate this is updating
+        // & we don't the type of the variable
+        resultNode = insertNewVariable(varName, typeNotDefined, *varValue,
+                                       false, true, &global_error);
+
+        if (!resultNode || global_error != "") {
+          yyerror(global_error);
+          global_error = "";
+          return NULL;
+        }
+
+        fprintf(quadrableFile, "\tpop %s\n", varName);
+        return resultNode;
+      } else if (numOfOps == 3) {
+        // declare with assignment
+        // int var = 5;
+
+        // get the variable type
+        struct conNodeType *declareTypeNode = ex(p->opr.op[0]);
+        conEnum varType = declareTypeNode->type;
+
+        // get the variable name
+        char *varName = p->opr.op[1]->id.id;
+
+        // get the variable value (expr)
+        struct conNodeType *varValue = ex(p->opr.op[2]);
+
+        if (!varValue) {
+          yyerror("ERROR: Variable value is not valid");
+          return NULL;
+        }
+
+        resultNode = insertNewVariable(varName, varType, *varValue, false, true,
+                                       &global_error);
+
+        if (!resultNode || global_error != "") {
+          yyerror(global_error);
+          global_error = "";
+          return NULL;
+        }
+
+        fprintf(quadrableFile, "\tpop %s\n", varName);
+        return resultNode;
+      } else if (numOfOps == 4) {
+        // const declare with assignment
+        // const int var = 5;
+
+        // get the variable type
+        struct conNodeType *declareTypeNode = ex(p->opr.op[1]);
+        conEnum varType = declareTypeNode->type;
+
+        // get the variable name
+        char *varName = p->opr.op[2]->id.id;
+
+        // get the variable value (expr)
+        struct conNodeType *varValue = ex(p->opr.op[3]);
+
+        if (!varValue) {
+          yyerror("ERROR: Variable value is not valid");
+          return NULL;
+        }
+
+        resultNode = insertNewVariable(varName, varType, *varValue, true, true,
+                                       &global_error);
+
+        if (!resultNode || global_error != "") {
+          yyerror(global_error);
+          global_error = "";
+          return NULL;
+        }
+
+        fprintf(quadrableFile, "\tpop %s\n", varName);
+        return resultNode;
+      }
+
+      break;
+    }
     case WHILE: {
       break;
     }
@@ -283,10 +397,30 @@ struct conNodeType *handle_operation_node(nodeType *p) {
     case BREAK: {
       break;
     }
-    case ASSIGNMENT: {
+    case FUNCTION: {
       break;
     }
-    case DECLEARE: {
+    case VOIDFUNCTION: {
+      break;
+    }
+
+    case STATMENT_SEPARATOR: {
+      break;
+    }
+    case NEW_SCOPE: {
+      break;
+    }
+      // TODO: handle all below
+    case 't': {
+      break;
+    }
+    case 'r': {
+      break;
+    }
+    case 'q': {
+      break;
+    }
+    case ':': {
       break;
     }
 
@@ -306,6 +440,7 @@ struct conNodeType *ex(nodeType *p) {
     return NULL;
   }
 
+  struct conNodeType *resultNode = malloc(sizeof(struct conNodeType *));
   nodeEnum currentNodeType = p->type;
   switch (currentNodeType) {
     case typeCon:
@@ -315,7 +450,8 @@ struct conNodeType *ex(nodeType *p) {
       return handle_def_node(p);
       break;
     case typeId:
-      return handle_identifier_node(p);
+      handle_identifier_node(p, resultNode);
+      return resultNode;
       break;
     case typeOpr:
 

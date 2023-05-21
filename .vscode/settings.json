@@ -17,7 +17,8 @@
     "parser.h": "c",
     "compile.h": "c",
     "y.tab.h": "c",
-    "dirent.h": "c"
+    "dirent.h": "c",
+    "type_traits": "cpp"
   },
   "C_Cpp.errorSquiggles": "disabled"
 }

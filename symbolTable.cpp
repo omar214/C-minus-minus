@@ -105,7 +105,8 @@ struct conNodeType *insertNewVariable(char *var_name, conEnum var_type,
         return NULL;
       }
 
-      bool is_redeclared = var_type == typeNotDefined;
+      // we use notDefined to indicate updating
+      bool is_redeclared = (var_type != typeNotDefined);
       if (is_redeclared) {
         *error = (char *)malloc(sizeof(char) * 100);
         strcpy(*error,
@@ -120,6 +121,7 @@ struct conNodeType *insertNewVariable(char *var_name, conEnum var_type,
           make_pair(false, true);  // is_const= false, has_value = true
 
       conNodeType *variableNode = &(table_iterator->symtable[var_name].first);
+      printSymbolTable();
       return variableNode;
     }
 
@@ -149,6 +151,7 @@ struct conNodeType *insertNewVariable(char *var_name, conEnum var_type,
   curr_global_table.symtable.insert({var_name, type_value});
 
   conNodeType *variableNode = &(curr_global_table.symtable[var_name].first);
+  printSymbolTable();
   return variableNode;
 }
 
@@ -204,26 +207,32 @@ void printSymbolTable() {
     // string is_const       = it.second.second.first  ? "Yes ✔" : "No ✖";
     string is_initialized = it.second.second.second ? "true" : "false";
     string var_type_str = "";
+    string var_value_str = "";
 
     switch (var_type) {
       case typeInt:
         var_type_str = "Integer";
+        var_value_str = to_string(it.second.first.iValue);
         break;
 
       case typeFloat:
         var_type_str = "Float";
+        var_value_str = to_string(it.second.first.fValue);
         break;
 
       case typeBool:
         var_type_str = "Bool";
+        var_value_str = to_string(it.second.first.iValue);
         break;
 
       case typeChar:
         var_type_str = "Char";
+        var_value_str = (it.second.first.cValue);
         break;
 
       case typeString:
         var_type_str = "String";
+        var_value_str = string(it.second.first.sValue);
         break;
 
       case typeVoid:
@@ -238,15 +247,17 @@ void printSymbolTable() {
       continue;
     }
 
-    cout << "variable_name:\t" << var_name << " | type:\t" << var_type_str
-         << " | is_constant:\t" << is_const << " | is_initialized\t"
-         << is_initialized << " \n";
+    cout << "variable_name:\t" << var_name << "\tValue : " << var_value_str
+         << " | type:\t" << var_type_str << " | is_constant:\t" << is_const
+         << " | is_initialized\t" << is_initialized << " \n";
 
-    symbol_table_file << "variable Name:\t" << var_name << "\ttype:\t"
+    symbol_table_file << "variable Name:\t" << var_name
+                      << "\tValue : " << var_value_str << "\ttype:\t"
                       << var_type_str << "\tis_constant:\t" << is_const
                       << "\tis_initialized\t" << is_initialized << " \n";
   }
-  symbol_table_file << "-------------------End Symbol Table-----------------"
-                    << endl;
-  cout << "-------------------End Symbol Table-----------------" << endl;
+  symbol_table_file
+      << "-------------------End Symbol Table-----------------\n\n\n"
+      << endl;
+  cout << "-------------------End Symbol Table-----------------\n\n\n" << endl;
 }
