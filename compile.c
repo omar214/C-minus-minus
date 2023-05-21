@@ -124,7 +124,7 @@ struct conNodeType *handle_identifier_node(nodeType *p)
   bool hasError = strcmp(global_error, "") != 0 || resultNode == NULL;
   if (hasError)
   {
-    printf("ERROR: %s\n", global_error);
+    // printf("ERROR: %s\n", global_error);
     yyerror(global_error);
     global_error = "";
   }
@@ -132,6 +132,13 @@ struct conNodeType *handle_identifier_node(nodeType *p)
   return resultNode;
 }
 
+/**
+ * @brief function that checks if this operation is binary or not
+ * 
+ * @param operation the operation to be checked
+ * @return true if binary operation
+ * @return false if not binary operation
+ */
 bool is_binary_operation(int operation)
 {
   int operationsArr[] = {
@@ -159,6 +166,12 @@ bool is_binary_operation(int operation)
   return false;
 }
 
+/**
+ * @brief Get the operation string object
+ * 
+ * @param operand the operation to be converted to string
+ * @return char* the string of the operation
+ */
 char *get_operation_string(int operand)
 {
   switch (operand)
@@ -214,12 +227,17 @@ char *get_operation_string(int operand)
   }
 }
 
+/**
+ * @brief Get the operand value object , whether it's a constant or an identifier or nested operation
+ * 
+ * @param p the node to be handled
+ * @return struct conNodeType* the value of the operand
+ */
 struct conNodeType *get_operand_value(nodeType *p)
 {
   switch (p->type)
   {
   case typeCon:
-    printf("const node\n");
     return handle_const_node(p);
     break;
   case typeId:
@@ -288,7 +306,6 @@ struct conNodeType *ex(nodeType *p)
 {
   if (!p)
   {
-    printf("ERROR: empty node\n");
     return NULL;
   }
 
@@ -306,7 +323,6 @@ struct conNodeType *ex(nodeType *p)
     break;
   case typeOpr:
 
-    printf("opr in ex %d\n", p->opr.oper);
     return handle_operation_node(p);
     break;
   default:
@@ -324,19 +340,19 @@ struct conNodeType *ex(nodeType *p)
  */
 void execute(nodeType *p)
 {
-  if(p->type == typeOpr ){
-    printf("typeOpr\n");
-    printf("opr: %d\n", p->opr.oper);
-  }else if(p->type == typeCon){
-    printf("typeCon\n");
-  }else if(p->type == typeId){
-    printf("typeId\n");
-  }else if(p->type == typeDef){
-    printf("typeDef\n");
-  }
+  // if(p->type == typeOpr ){
+  //   // printf("typeOpr\n");
+  //   // printf("opr: %d\n", p->opr.oper);
+  // }else if(p->type == typeCon){
+  //   // printf("typeCon\n");
+  // }else if(p->type == typeId){
+  //   // printf("typeId\n");
+  // }else if(p->type == typeDef){
+  //   // printf("typeDef\n");
+  // }
 
   if(!p){
-    printf("ERROR: empty node\n");
+    // printf("ERROR: empty node\n");
     return;
   }
 
