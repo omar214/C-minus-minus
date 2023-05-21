@@ -1,0 +1,81 @@
+	push	5
+	neg
+	push	5
+	not
+	push	2
+	push	5
+	and
+	push	3
+	push	4
+	or
+	push	1
+	not
+	push	4
+	push	4
+	plus
+	push	5
+	push	5
+	mul
+	compLT
+	push	5
+	push	4
+	compGT
+	push	4
+	push	5
+	compLTE
+	push	5
+	push	4
+	compGTE
+	push	4
+	push	5
+	compEQ
+	push	5
+	push	4
+	compNEQ
+	push	2
+	push	3
+	push	4
+	mul
+	plus
+	push	4
+	plus
+	push	5
+	subtract
+	push	2
+	push	5
+	push	3
+	mul
+	plus
+	push	3
+	plus
+	push	5
+	push	3
+	plus
+	push	1
+	subtract
+	push	3
+	push	5
+	mul
+	push	4
+	div
+	plus
+	push	13
+	pop cs
+	push	13
+	pop x
+	push	10
+	pop y
+	push	x
+	push	y
+	div
+	push	x
+	subtract
+	pop z
+	push	1
+	pop a
+	push	0
+	pop b
+	push	a
+	push	b
+	and
+	pop c
