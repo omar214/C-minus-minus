@@ -45,6 +45,101 @@ void clearTablePath() {
 }
 
 /**
+ * @brief print the symbol table
+ */
+void printSymbolTable(bool is_print_nest = false) {
+  symbol_table *table_iterator = &curr_global_table;
+
+  is_print_nest = is_print_nest || table_iterator->parent != NULL;
+
+  if (!is_print_nest) {
+    while (table_iterator->parent != NULL) {
+      table_iterator = table_iterator->parent;
+    }
+  }
+
+  if (is_print_nest) {
+    cout << "\t\tNested Symbol Table" << endl << "\t\t";
+    symbol_table_file << "\t\tNested Symbol Table" << endl << "\t\t";
+  }
+  cout << "------------------- Start SYMBOL TABLE ------------------" << endl;
+  symbol_table_file
+      << "------------------ Start SYMBOL TABLE -------------------" << endl;
+
+  if (!table_iterator) return;
+  for (auto &it : table_iterator->symtable) {
+    string var_name = it.first;
+    conEnum var_type = it.second.first.type;
+    string is_const = it.second.second.first ? "true" : "false";
+    // string is_const       = it.second.second.first  ? "Yes ✔" : "No ✖";
+    string is_initialized = it.second.second.second ? "true" : "false";
+    string var_type_str = "";
+    string var_value_str = "";
+
+    switch (var_type) {
+      case typeInt:
+        var_type_str = "Integer";
+        var_value_str = to_string(it.second.first.iValue);
+        break;
+
+      case typeFloat:
+        var_type_str = "Float";
+        var_value_str = to_string(it.second.first.fValue);
+        break;
+
+      case typeBool:
+        var_type_str = "Bool";
+        var_value_str = to_string(it.second.first.iValue);
+        break;
+
+      case typeChar:
+        var_type_str = "Char";
+        var_value_str = (it.second.first.cValue);
+        var_value_str = "'" + var_value_str + "'";
+        break;
+
+      case typeString:
+        var_type_str = "String";
+        var_value_str = '"' + string(it.second.first.sValue) + '"';
+        break;
+
+      case typeVoid:
+        var_type_str = "Void";
+        break;
+      default:
+        break;
+    }
+    if (var_name == "main") {
+      // since function are saved in the symbol table also && we need to
+      // neglect the main
+      continue;
+    }
+
+    if (is_print_nest) {
+      cout << "\t\t";
+      symbol_table_file << "\t\t";
+    }
+    cout << "variable_name:\t" << var_name << "\tValue : " << var_value_str
+         << " | type:\t" << var_type_str << " | is_constant:\t" << is_const
+         << " | is_initialized\t" << is_initialized << " \n";
+
+    symbol_table_file << "variable Name:\t" << var_name
+                      << "\tValue : " << var_value_str << "\ttype:\t"
+                      << var_type_str << "\tis_constant:\t" << is_const
+                      << "\tis_initialized\t" << is_initialized << " \n";
+  }
+
+  if (is_print_nest) {
+    cout << "\t\t";
+    symbol_table_file << "\t\t";
+  }
+  symbol_table_file
+      << "------------------ END   SYMBOL TABLE -------------------\n"
+      << endl;
+  cout << "------------------ END   SYMBOL TABLE -------------------\n" << endl;
+}
+
+/**
  * @brief function used to move the scope of the symbol table
  * to handle the nested scopes & functions
  * @param scope_dir integer value to indicates whether we will go up or down in
@@ -53,8 +148,10 @@ void clearTablePath() {
 void changeScope(scopeEnum scope_dir) {
   if (scope_dir == up) {
     // go up in the scope
+    symbol_table *prev_table = new symbol_table{curr_global_table};
+
     symbol_table *new_table = new symbol_table;
-    new_table->parent = &curr_global_table;
+    new_table->parent = prev_table;
     curr_global_table = *new_table;
   } else {
     // go down in the scope
@@ -121,10 +218,19 @@ struct conNodeType *insertNewVariable(char *var_name, conEnum var_type,
           make_pair(false, true);  // is_const= false, has_value = true
 
       conNodeType *variableNode = &(table_iterator->symtable[var_name].first);
-      printSymbolTable();
+      printSymbolTable(false);  // false to not print nested scopes
       return variableNode;
     }
 
+    // check if nested scope & new declaration (adding var to this nested scope)
+    bool is_nested_scope = (table_iterator->parent != NULL);
+    bool is_new_declare_in_scope = (var_type != typeNotDefined);
+
+    // inserting new var to this scope , so don't need to go up
+    if (is_nested_scope && is_new_declare_in_scope) {
+      printf("\nnew declaration in nested scope\n");
+      break;
+    }
     table_iterator = table_iterator->parent;
   }
 
@@ -151,7 +257,7 @@ struct conNodeType *insertNewVariable(char *var_name, conEnum var_type,
   curr_global_table.symtable.insert({var_name, type_value});
 
   conNodeType *variableNode = &(curr_global_table.symtable[var_name].first);
-  printSymbolTable();
+  printSymbolTable(false);  // false to not print nested scopes
   return variableNode;
 }
 
@@ -162,7 +268,8 @@ struct conNodeType *insertNewVariable(char *var_name, conEnum var_type,
  * @param error    the error message if there is an error
  * @return struct conNodeType* the node of the variable
  */
-struct conNodeType *getVariable(char *var_name, char **error, struct conNodeType** resultNode) {
+struct conNodeType *getVariable(char *var_name, char **error,
+                                struct conNodeType **resultNode) {
   // intialize next table pointer
   symbol_table *table_iterator = &curr_global_table;
 
@@ -179,8 +286,7 @@ struct conNodeType *getVariable(char *var_name, char **error, struct conNodeType
         strcpy(*error, "variable is not initialized");
         printf("variable %s is not initialized\n", var_name);
       }
-      // printf("variable %s is found\n type is %d value is %d\n", var_name, (*resultNode)->type, (*resultNode)->iValue);
-      // printf("variable %s is found\n type is %d value is %d\n", var_name, variableNode->type, variableNode->iValue);
+
       return variableNode;
     }
     table_iterator = table_iterator->parent;
@@ -188,80 +294,4 @@ struct conNodeType *getVariable(char *var_name, char **error, struct conNodeType
   *error = (char *)malloc(sizeof(char) * 100);
   strcpy(*error, "variable is not declared");
   return NULL;
-}
-
-/**
- * @brief print the symbol table
- */
-void printSymbolTable() {
-  symbol_table *table_iterator = &curr_global_table;
-  while (table_iterator->parent != NULL) {
-    table_iterator = table_iterator->parent;
-  }
-
-  cout << "------------------- Start SYMBOL TABLE ------------------" << endl;
-  symbol_table_file
-      << "------------------ Start SYMBOL TABLE ------------------" << endl;
-
-  if (!table_iterator) return;
-  for (auto &it : table_iterator->symtable) {
-    string var_name = it.first;
-    conEnum var_type = it.second.first.type;
-    string is_const = it.second.second.first ? "true" : "false";
-    // string is_const       = it.second.second.first  ? "Yes ✔" : "No ✖";
-    string is_initialized = it.second.second.second ? "true" : "false";
-    string var_type_str = "";
-    string var_value_str = "";
-
-    switch (var_type) {
-      case typeInt:
-        var_type_str = "Integer";
-        var_value_str = to_string(it.second.first.iValue);
-        break;
-
-      case typeFloat:
-        var_type_str = "Float";
-        var_value_str = to_string(it.second.first.fValue);
-        break;
-
-      case typeBool:
-        var_type_str = "Bool";
-        var_value_str = to_string(it.second.first.iValue);
-        break;
-
-      case typeChar:
-        var_type_str = "Char";
-        var_value_str = (it.second.first.cValue);
-        var_value_str = "'" + var_value_str + "'";
-        break;
-
-      case typeString:
-        var_type_str = "String";
-        var_value_str = '"' + string(it.second.first.sValue) + '"';
-        break;
-
-      case typeVoid:
-        var_type_str = "Void";
-        break;
-      default:
-        break;
-    }
-    if (var_name == "main") {
-      // since function are saved in the symbol table also && we need to
-      // neglect the main
-      continue;
-    }
-
-    cout << "variable_name:\t" << var_name << "\tValue : " << var_value_str
-         << " | type:\t" << var_type_str << " | is_constant:\t" << is_const
-         << " | is_initialized\t" << is_initialized << " \n";
-
-    symbol_table_file << "variable Name:\t" << var_name
-                      << "\tValue : " << var_value_str << "\ttype:\t"
-                      << var_type_str << "\tis_constant:\t" << is_const
-                      << "\tis_initialized\t" << is_initialized << " \n";
-  }
-  symbol_table_file << "-------------------End Symbol Table-----------------\n"
-                    << endl;
-  cout << "-------------------End Symbol Table-----------------\n" << endl;
 }

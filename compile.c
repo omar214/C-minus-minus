@@ -240,6 +240,26 @@ struct conNodeType *get_operand_value(nodeType *p) {
   }
 }
 
+char *get_case_value_to_compare_as_string(nodeType *p) {
+  char *result = malloc(sizeof(char *));
+
+  switch (p->con.type) {
+    case typeInt:
+      sprintf(result, "%d", p->con.iValue);
+      break;
+    case typeChar:
+      sprintf(result, "\'%c\'", p->con.cValue);
+      break;
+    case typeString:
+      sprintf(result, "\"%s\"", p->con.sValue);
+      break;
+    default:
+      break;
+  }
+
+  return result;
+}
+
 /**
  * @brief Function that handles the operation nodes
  *
@@ -402,6 +422,7 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       // print the end label
       fprintf(quadrableFile, "L%03d:\n", end_while_label);
 
+      return NULL;
       break;
     }
     case DO: {
@@ -428,6 +449,7 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       // print the end label
       fprintf(quadrableFile, "L%03d:\n", end_do_while_label);
 
+      return NULL;
       break;
     }
     case FOR: {
@@ -463,18 +485,129 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       // print the end label
       fprintf(quadrableFile, "L%03d:\n", end_for_label);
 
+      return NULL;
       break;
     }
     case IF: {
+      struct conNodeType *if_condition = p->opr.op[0];
+      struct conNodeType *if_body = p->opr.op[1];
+      int end_if_label = global_curr_label++;
+
+      // execute the condition
+      ex(if_condition);
+
+      // jumb to end_if if the condition is false
+      fprintf(quadrableFile, "\tjz\tL%03d\n", end_if_label);
+
+      // execute the body
+      ex(if_body);
+
+      // check if has eles
+      bool hasElse = p->opr.nops > 2;
+      if (!hasElse) {
+        // print the end label
+        fprintf(quadrableFile, "L%03d:\n", end_if_label);
+
+      } else {
+        int end_else_label = global_curr_label++;
+
+        // print the jump to the end_else
+        fprintf(quadrableFile, "\tjmp\tL%03d\n", end_else_label);
+
+        // print the end_if label
+        fprintf(quadrableFile, "L%03d:\n", end_if_label);
+
+        // execute the else body
+        ex(p->opr.op[2]);
+
+        // print the end_else label
+        fprintf(quadrableFile, "L%03d:\n", end_else_label);
+      }
+
+
+      return NULL;
       break;
     }
     case SWITCH: {
+      // get the variable name
+      char *varName = p->opr.op[0]->id.id;
+      getVariable(varName, &global_error, &resultNode);
+
+      // check if variable exists
+      if (!resultNode || global_error != "") {
+        printf("ERROR: %s\n", global_error);
+        yyerror(global_error);
+        global_error = "";
+        break;
+      }
+
+      // get the labels & register
+      int start_switch_label = global_curr_label++;
+      int end_switch_label = global_switch_lbl++;
+      int switch_var_reg = global_curr_reg++;
+
+      struct conNodeType *switch_body_statement = p->opr.op[1];
+      struct conNodeType *switch_default_statement = p->opr.op[2];
+
+      // print the start label
+      fprintf(quadrableFile, "L%03d:  ", start_switch_label);
+
+      // store the variable in a register
+      fprintf(quadrableFile, "\tpush\t%s\n", varName);
+      fprintf(quadrableFile, "\tpop\tR%d\n", switch_var_reg);
+
+      // execute the body
+      ex(switch_body_statement);
+
+      // execute the default
+      ex(switch_default_statement);
+
+      // print the end label
+      fprintf(quadrableFile, "L%03d:\n", end_switch_label);
+
       break;
     }
     case CASE: {
+      struct conNodeType *other_case_list = p->opr.op[0];
+      struct conNodeType *case_value_to_compare = p->opr.op[1];
+      struct conNodeType *case_body_statement = p->opr.op[2];
+
+      int case_reg = global_curr_reg - 1;
+      int end_case_label = global_switch_lbl++;
+
+      // execute the other case list , as we used left recursion
+      ex(other_case_list);
+
+      // push the register to the stack
+      fprintf(quadrableFile, "\tpush\tR03%d\n", case_reg);
+
+      // push the value to compare with (int , float , char , string)
+      char *temp = get_case_value_to_compare_as_string(case_value_to_compare);
+      fprintf(quadrableFile, "\tpush\t%s\n", temp);
+
+      // compare the two values
+      fprintf(quadrableFile, "\tcompEQ\n");
+
+      // jumb to end_case if the condition is false
+      fprintf(quadrableFile, "\tjz\tL%03d\n", end_case_label);
+
+      // execute the body
+      ex(case_body_statement);
+
+      // jump to the end of the whole switch
+      fprintf(quadrableFile, "\tjmp\tL%03d\n", global_switch_lbl);
+
+      // print the end label
+      fprintf(quadrableFile, "L%03d:\n", end_case_label);
+
       break;
     }
     case DEFAULT: {
+      struct conNodeType *default_body_statement = p->opr.op[0];
+
+      // execute the body
+      ex(default_body_statement);
+
       break;
     }
     case BREAK: {
@@ -488,9 +621,42 @@ struct conNodeType *handle_operation_node(nodeType *p) {
     }
 
     case STATMENT_SEPARATOR: {
+      int num_ops = p->opr.nops;
+
+      bool is_inside_function = (num_ops == 3);
+
+      // the default case (statemetn , statment)
+      if (!is_inside_function) {
+        printf("inside statment separator\n");
+
+        struct conNodeType *first_statement = p->opr.op[0];
+        struct conNodeType *second_statement = p->opr.op[1];
+
+        // execute the first statement
+        ex(first_statement);
+
+        // execute the second statement
+        return ex(second_statement);
+      } else {
+        // TODO: handle this
+      }
+
       break;
     }
     case NEW_SCOPE: {
+      printf("inside new scope\n");
+
+      // change the scope
+      changeScope(1);
+
+      // execute the body
+      struct conNodeType * statement_body = p->opr.op[0];
+      ex(statement_body);
+
+      // change the scope
+      changeScope(-1);
+
+      return NULL;
       break;
     }
       // TODO: handle all below
@@ -510,6 +676,8 @@ struct conNodeType *handle_operation_node(nodeType *p) {
     default:
       break;
   }
+
+  return resultNode;
 }
 
 /**
