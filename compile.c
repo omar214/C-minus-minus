@@ -668,9 +668,114 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       break;
     }
     case FUNCTION: {
+      // get the function type
+      struct conNodeType *temp = ex(p->opr.op[0]);
+      conEnum function_type = temp->type;
+
+      // get the function name
+      char *funcName = p->opr.op[1]->id.id;
+
+      // get the function param , body
+      struct conNodeType *function_param = p->opr.op[2];
+      struct conNodeType *function_body = p->opr.op[3];
+
+      // insert the function in the symbol table
+      insertNewVariable(funcName, function_type, *temp, false, true,
+                        &global_error);
+
+      // check if the function is already defined
+      if (global_error != "") {
+        printf("ERROR: %s\n", global_error);
+        yyerror(global_error);
+        global_error = "";
+        break;
+      }
+
+      // change the scope
+      changeScope(1);
+
+      // print the function name
+      fprintf(quadrableFile, "%s:\n", funcName);
+
+      // execute the function param
+      ex(function_param);
+
+      // execute the function body
+      ex(function_body);
+
+      // change the scope
+      changeScope(-1);
+
+      // append the function to the function linked list
+      functionLinkedList *newFunction = malloc(sizeof(functionLinkedList));
+      newFunction->name = funcName;
+      newFunction->next = functionListHeader;
+      functionListHeader = newFunction;
+
+      // print the end of the function
+      fprintf(quadrableFile, "\tEND\t%s\n", funcName);
+
       break;
     }
     case VOIDFUNCTION: {
+      // get the function type
+      conEnum function_type = typeVoid;
+
+      // get the function name
+      char *funcName = p->opr.op[0]->id.id;
+
+      // get the function param , body
+      struct conNodeType *function_param = p->opr.op[1];
+      struct conNodeType *function_body = p->opr.op[2];
+
+      // insert the function in the symbol table
+      struct conNodeType *temp = malloc(sizeof(struct conNodeType));
+      insertNewVariable(funcName, function_type, *temp, false, true,
+                        &global_error);
+
+      // check if the function is already defined
+      if (global_error != "") {
+        printf("ERROR: %s\n", global_error);
+        yyerror(global_error);
+        global_error = "";
+        break;
+      }
+
+      // check if main
+      bool is_main = strcmp(funcName, "main") == 0;
+
+      // change the scope
+      if (!is_main) {
+        changeScope(1);
+      }
+
+      // print the function name
+      fprintf(quadrableFile, "%s:\n", funcName);
+
+      // execute the function param
+      ex(function_param);
+
+      // execute the function body
+      ex(function_body);
+
+      // change the scope
+      if (!is_main) {
+        changeScope(-1);
+      }
+
+      // append the function to the function linked list
+      functionLinkedList *newFunction = malloc(sizeof(functionLinkedList));
+      newFunction->name = funcName;
+      newFunction->next = functionListHeader;
+      functionListHeader = newFunction;
+
+      // print the end of the function
+      if (is_main) {
+        fprintf(quadrableFile, "\tHLT\n");
+      } else {
+        fprintf(quadrableFile, "\tEND\t%s\n", funcName);
+      }
+
       break;
     }
 
