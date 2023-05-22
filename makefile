@@ -10,12 +10,17 @@ flex:
 	@echo -e \n----------- Running Flex on lexer -----------
 	flex lexer.l
 
+server: 
+	@echo -e \n----------- Running BE Server -----------
+	node GUI/BE/server.js
+
 compile:
 	@echo -e \n----------- Compiling both -----------
 	g++ -c -g symbolTable.cpp
 	gcc -c -g y.tab.c lex.yy.c compile.c
 	g++ -g -o compiler.exe symbolTable.o compile.o lex.yy.o y.tab.o
-	@#g++ -o cpp.out symbolTable.o lex.yy.o y.tab.o
+	cp compiler.exe GUI/BE/compiler.exe
+	#@g++ -o cpp.out symbolTable.o lex.yy.o y.tab.o
 	@echo -e ----------- compiled successfully -----------\n
 
 compile_debug:

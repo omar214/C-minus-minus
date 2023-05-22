@@ -4,3 +4,4 @@ y.tab.*
 *.o
 *.out
 *.exe
+node_modules
