@@ -6,3 +6,36 @@ variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	false
 ------------------ END   SYMBOL TABLE -------------------
 
 ------------------ Start SYMBOL TABLE -------------------
+variable Name:	a	Value : ''	type:	Char	is_constant:	false	is_initialized	false 
+variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	b	Value : 's'	type:	Char	is_constant:	false	is_initialized	true 
+variable Name:	a	Value : ''	type:	Char	is_constant:	false	is_initialized	false 
+variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	c	Value : 's'	type:	Char	is_constant:	false	is_initialized	true 
+variable Name:	b	Value : 's'	type:	Char	is_constant:	false	is_initialized	true 
+variable Name:	a	Value : ''	type:	Char	is_constant:	false	is_initialized	false 
+variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	c	Value : 's'	type:	Char	is_constant:	false	is_initialized	true 
+variable Name:	b	Value : 's'	type:	Char	is_constant:	false	is_initialized	true 
+variable Name:	d	Value : "sasd"	type:	String	is_constant:	false	is_initialized	true 
+variable Name:	a	Value : ''	type:	Char	is_constant:	false	is_initialized	false 
+variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	c	Value : 's'	type:	Char	is_constant:	false	is_initialized	true 
+variable Name:	b	Value : 's'	type:	Char	is_constant:	false	is_initialized	true 
+variable Name:	d	Value : "sasd"	type:	String	is_constant:	false	is_initialized	true 
+variable Name:	a	Value : ''	type:	Char	is_constant:	false	is_initialized	false 
+variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
+------------------ END   SYMBOL TABLE -------------------
+

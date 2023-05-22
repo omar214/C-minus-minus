@@ -1,0 +1,9 @@
+main:
+	push	's'
+	pop b
+	push	's'
+	pop c
+	push	"sasd"
+	pop d
+	push	a
+	HLT

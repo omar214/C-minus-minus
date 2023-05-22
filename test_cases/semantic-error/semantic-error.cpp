@@ -1,6 +1,10 @@
-void main()
-{
+void main() {
   int x;
-  string a;
+  char a;
+
+  char b = 's';
+  char c = 's';
+  string d = "sasd";
+
   x = a;
 }

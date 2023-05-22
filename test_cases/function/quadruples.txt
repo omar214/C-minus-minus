@@ -1,19 +1,19 @@
-sum:
+print2:
 	POP	x
 	POP	y
-	push	x
-	push	y
+	push	30
+	pop z
+	push	40
+	pop a
+	push	5
+	push	5
 	plus
-	END	sum
+	pop x
+	END	print2
 main:
 	push	33
 	pop a
 	push	10
 	push	20
-	CALL	sum
-	pop a
-	push	a
-	push	a
-	CALL	sum
-	pop a
+	CALL	print2
 	HLT
