@@ -1,1 +1,1 @@
-Error at line [15]: variable is not declared
+Error at line [8]: variable is not declared

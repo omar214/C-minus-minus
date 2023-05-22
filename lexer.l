@@ -15,6 +15,7 @@
     // #define debug_token(str) if(debug) printf("%s  %s\n", str, yytext); 
 
     // Global variables
+    int yy_lineno = 1;
     int debug = 0;
 %}
 
@@ -137,7 +138,7 @@ OTHERS          .
 {WHITESPACE}          ;
 
     /* new line */
-{NEWLINE}           { yylineno++; }
+{NEWLINE}           { yylineno++;  yy_lineno++;}
 
     /* comments */
 {SINGLE_COMMENT}        ;

@@ -29,6 +29,7 @@ int yyparse(void);
 // Global Variables
 extern int debug ;
 extern int yylineno;
+extern int yy_lineno;
 extern FILE* yyin; 
 extern FILE* yyout;
 FILE* quadrables_file;
@@ -250,8 +251,8 @@ function_call:
 
 
 void yyerror(char *s) {
-    fprintf(yyout, "Error at line [%d]: %s\n", yylineno, s);
-    fprintf(stdout,"Error at line [%d]: %s\n", yylineno, s);
+    fprintf(yyout, "Error at line [%d]: %s\n",  yy_lineno, s);
+    fprintf(stdout,"Error at line [%d]: %s\n",  yy_lineno, s);
 
 }
 

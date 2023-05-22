@@ -1,2 +1,2 @@
-Error at line [19]: variable is not initialized
-Error at line [19]: Error: type missmatch for the variable
+Error at line [10]: variable is not initialized
+Error at line [10]: Error: type missmatch for the variable
