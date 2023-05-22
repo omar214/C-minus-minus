@@ -1,0 +1,17 @@
+sum:
+	POP	x
+	POP	y
+	push	x
+	push	y
+	plus
+	END	sum
+main:
+	push	10
+	push	20
+	CALL	sum
+	pop a
+	push	a
+	push	a
+	CALL	sum
+	pop a
+	HLT

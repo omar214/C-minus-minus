@@ -1,0 +1,8 @@
+------------------ Start SYMBOL TABLE -------------------
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------

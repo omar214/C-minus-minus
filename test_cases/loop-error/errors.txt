@@ -1,0 +1,5 @@
+line [4]: syntax error, unexpected PLUS, expecting ASSIGNMENT
+line [13]: syntax error, unexpected PLUS
+line [20]: syntax error, unexpected PLUS
+line [26]: syntax error, unexpected BREAK
+line [31]: syntax error, unexpected $end, expecting WHILE

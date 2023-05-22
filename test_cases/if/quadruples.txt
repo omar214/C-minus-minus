@@ -1,0 +1,24 @@
+main:
+	push	10
+	pop x
+	push	x
+	push	10
+	compEQ
+	jz	L000
+	push	10
+	pop b
+	jmp	L001
+L000:
+	push	x
+	push	5
+	compEQ
+	jz	L002
+	push	5
+	pop b
+	jmp	L003
+L002:
+	push	x
+	pop b
+L003:
+L001:
+	HLT

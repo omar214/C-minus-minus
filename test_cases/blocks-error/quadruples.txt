@@ -1,0 +1,8 @@
+main:
+	push	10
+	pop x
+	push	20
+	pop y
+	push	y
+	pop x
+	HLT
