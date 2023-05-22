@@ -2,18 +2,7 @@
 ------------------ END   SYMBOL TABLE -------------------
 
 ------------------ Start SYMBOL TABLE -------------------
-variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
------------------- END   SYMBOL TABLE -------------------
-
------------------- Start SYMBOL TABLE -------------------
-variable Name:	y	Value : 10	type:	Integer	is_constant:	false	is_initialized	true 
-variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
------------------- END   SYMBOL TABLE -------------------
-
------------------- Start SYMBOL TABLE -------------------
-variable Name:	y	Value : 10	type:	Integer	is_constant:	false	is_initialized	true 
-variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
-variable Name:	z	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	x	Value : 345	type:	Integer	is_constant:	false	is_initialized	true 
 ------------------ END   SYMBOL TABLE -------------------
 
 		Nested Symbol Table
@@ -22,35 +11,6 @@ variable Name:	z	Value : 0	type:	Integer	is_constant:	false	is_initialized	true
 		------------------ END   SYMBOL TABLE -------------------
 
 ------------------ Start SYMBOL TABLE -------------------
-variable Name:	a	Value : 1	type:	Bool	is_constant:	false	is_initialized	true 
-variable Name:	y	Value : 10	type:	Integer	is_constant:	false	is_initialized	true 
-variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
-variable Name:	z	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
------------------- END   SYMBOL TABLE -------------------
-
------------------- Start SYMBOL TABLE -------------------
-variable Name:	b	Value : 0	type:	Bool	is_constant:	false	is_initialized	true 
-variable Name:	a	Value : 1	type:	Bool	is_constant:	false	is_initialized	true 
-variable Name:	y	Value : 10	type:	Integer	is_constant:	false	is_initialized	true 
-variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
-variable Name:	z	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
------------------- END   SYMBOL TABLE -------------------
-
------------------- Start SYMBOL TABLE -------------------
-variable Name:	c	Value : 0	type:	Bool	is_constant:	false	is_initialized	true 
-variable Name:	b	Value : 0	type:	Bool	is_constant:	false	is_initialized	true 
-variable Name:	a	Value : 1	type:	Bool	is_constant:	false	is_initialized	true 
-variable Name:	y	Value : 10	type:	Integer	is_constant:	false	is_initialized	true 
-variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
-variable Name:	z	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
------------------- END   SYMBOL TABLE -------------------
-
------------------- Start SYMBOL TABLE -------------------
-variable Name:	c	Value : 0	type:	Bool	is_constant:	false	is_initialized	true 
-variable Name:	b	Value : 0	type:	Bool	is_constant:	false	is_initialized	true 
-variable Name:	a	Value : 1	type:	Bool	is_constant:	false	is_initialized	true 
-variable Name:	y	Value : 10	type:	Integer	is_constant:	false	is_initialized	true 
-variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
-variable Name:	z	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	x	Value : 345	type:	Integer	is_constant:	false	is_initialized	true 
 ------------------ END   SYMBOL TABLE -------------------
 

@@ -1,5 +1,5 @@
 make clean
 make build
-./compiler.exe tests/expressions/expressions.cpp tests/expressions/
+./compiler.exe test_cases/expressions/expressions.cpp test_cases/expressions/
 # gdb compiler.exe
 # run tests/expressions.cpp tests/

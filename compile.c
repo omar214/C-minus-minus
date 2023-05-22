@@ -632,17 +632,70 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       break;
     }
     case PRINT: {
-      // get the type of the expression
-      struct conNodeType *expr_to_print = ex(p->opr.op[0]);
+      // check if the type is identifier
+      bool is_identifier = p->opr.op[0]->type == typeId;
 
-      // store in register
-      int print_reg = global_curr_reg;
+      // we can only print identifiers
+      if (!is_identifier) {
+        break;
+      }
 
-      // pop the value from the stack
-      fprintf(quadrableFile, "\tpop\tR%03d\n", print_reg);
+      // get the variable name
+      char *varName = p->opr.op[0]->id.id;
 
-      // print the expression
-      fprintf(quadrableFile, "\tprint R%03d\n", print_reg);
+      // get the variable
+      getVariable(varName, &global_error, &resultNode);
+
+      // check if variable exists
+      if (!resultNode || global_error != "") {
+        printf("ERROR: %s\n", global_error);
+        yyerror(global_error);
+        global_error = "";
+        break;
+      }
+
+      // get the type of the variable
+      int varType = resultNode->type;
+
+      // print the variable
+      switch (varType) {
+        case typeInt:
+          fprintf(quadrableFile, "\tprint\t%d\t", resultNode->iValue);
+          break;
+        case typeFloat:
+          fprintf(quadrableFile, "\tprint\t%f\t", resultNode->fValue);
+          break;
+        case typeChar:
+          fprintf(quadrableFile, "\tprint\t\'%c\'\t", resultNode->cValue);
+          break;
+        case typeString:
+          fprintf(quadrableFile, "\tprint\t\"%s\"\t", resultNode->sValue);
+          break;
+        case typeBool:
+          fprintf(quadrableFile, "\tprint\t%s\t",
+                  resultNode->iValue ? "true" : "false");
+          break;
+        default:
+          break;
+      }
+      bool is_print_var_name = false;
+      if (is_print_var_name) {
+        fprintf(quadrableFile, "// var_name = %s\n ", varName);
+      } else {
+        fprintf(quadrableFile, "\n");
+      }
+
+      // // get the type of the expression
+      // struct conNodeType *expr_to_print = ex(p->opr.op[0]);
+
+      // // store in register
+      // int print_reg = global_curr_reg;
+
+      // // pop the value from the stack
+      // fprintf(quadrableFile, "\tpop\tR%03d\n", print_reg);
+
+      // // print the expression
+      // fprintf(quadrableFile, "\tprint R%03d\n", print_reg);
 
       break;
     }

@@ -1,22 +1,9 @@
 main:
-	push	0
+	push	345
 	pop x
-	push	10
-	pop y
-	push	x
-	push	y
-	div
-	push	x
-	subtract
-	pop z
+	print	345	
 	push	1
 	pop x
-	push	1
-	pop a
-	push	0
-	pop b
-	push	a
-	push	b
-	and
-	pop c
+	print	1	
+	print	345	
 	HLT
