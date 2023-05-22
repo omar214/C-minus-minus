@@ -75,6 +75,7 @@ void printSymbolTable(bool is_print_nest = false) {
     string is_initialized = it.second.second.second ? "true" : "false";
     string var_type_str = "";
     string var_value_str = "";
+    char *str = (char *)malloc(sizeof(char) * 100);
 
     switch (var_type) {
       case typeInt:
@@ -94,13 +95,32 @@ void printSymbolTable(bool is_print_nest = false) {
 
       case typeChar:
         var_type_str = "Char";
-        var_value_str = (it.second.first.cValue);
+
+        // check if value is not defined
+        if (it.second.first.cValue == '\0') {
+          var_value_str = "";
+        } else {
+          var_value_str.push_back(it.second.first.cValue);
+        }
+
         var_value_str = "'" + var_value_str + "'";
         break;
 
       case typeString:
+        // get the type
         var_type_str = "String";
-        var_value_str = '"' + string(it.second.first.sValue) + '"';
+
+        // get the value
+        str = it.second.first.sValue;
+
+        // strcpy(str, it.second.first.sValue);
+        if (str == NULL || strcmp(str, "") == 0) {
+          var_value_str = "\"\"";
+        } else {
+          // var_value_str = string(str);
+          var_value_str = '"' + string(str) + '"';
+        }
+        // var_value_str = "str";
         break;
 
       case typeVoid:
@@ -258,7 +278,13 @@ struct conNodeType *insertNewVariable(char *var_name, conEnum var_type,
   curr_global_table.symtable.insert({var_name, type_value});
 
   conNodeType *variableNode = &(curr_global_table.symtable[var_name].first);
-  printSymbolTable(false);  // false to not print nested scopes
+
+  try {
+    printSymbolTable(false);  // false to not print nested scopes
+  } catch (const std::exception &e) {
+    cout << "Error: " << e.what() << endl;
+  }
+
   return variableNode;
 }
 
