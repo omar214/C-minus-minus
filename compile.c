@@ -631,6 +631,21 @@ struct conNodeType *handle_operation_node(nodeType *p) {
 
       break;
     }
+    case PRINT: {
+      // get the type of the expression
+      struct conNodeType *expr_to_print = ex(p->opr.op[0]);
+
+      // store in register
+      int print_reg = global_curr_reg;
+
+      // pop the value from the stack
+      fprintf(quadrableFile, "\tpop\tR%03d\n", print_reg);
+
+      // print the expression
+      fprintf(quadrableFile, "\tprint R%03d\n", print_reg);
+
+      break;
+    }
     case DEFAULT: {
       is_inside_switch = true;
 

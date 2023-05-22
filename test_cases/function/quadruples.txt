@@ -5,12 +5,6 @@ sum:
 	push	y
 	plus
 	END	sum
-print:
-	push	10
-	pop x
-	push	20
-	pop y
-	END	print
 print2:
 	POP	x
 	POP	y
@@ -34,4 +28,38 @@ main:
 	push	a
 	CALL	sum
 	pop a
+	push	4
+	pop	R000
+	print R000
+	push	'4'
+	pop	R000
+	print R000
+	push	"asdasdas"
+	pop	R000
+	print R000
+	push	4
+	push	5
+	push	6
+	mul
+	plus
+	push	4
+	push	2
+	div
+	plus
+	pop	R000
+	print R000
+	push	4
+	push	5
+	plus
+	push	6
+	mul
+	push	4
+	push	2
+	div
+	plus
+	pop	R000
+	print R000
+	push	10
+	push	20
+	CALL	print2
 	HLT

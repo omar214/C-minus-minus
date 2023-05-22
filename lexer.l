@@ -59,6 +59,7 @@ OTHERS          .
 "for"               { return FOR;}
 "do"                { return DO;}
 "return"            { return RETURN;}
+"print"             { return PRINT;}
 
     /* Mathematical Operators */
 "="                 { return ASSIGNMENT;}

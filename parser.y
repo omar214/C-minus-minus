@@ -95,7 +95,7 @@ void execute(nodeType *p);
 %nonassoc UMINUS
 
 
-%token FUNCTION VOIDFUNCTION FUNCVARLIST CALLVARLIST CALL SYMBOLTABLE
+%token FUNCTION VOIDFUNCTION FUNCVARLIST CALLVARLIST CALL SYMBOLTABLE PRINT
 %token DECLARE NEW_SCOPE STATMENT_SEPARATOR SINGLE_PARAM_CALL MULTI_PARAM_CALL
 %token SINGLE_PARAM_DECLARATION MULTI_PARAM_DECLARATION FUNCTION_CALL ENUM_SINGLE_PARAM ENUM_MULTI_PARAM
 %type <nPtr> statement statement_list expr function_statement_list function_arguements_list function_arguements_call function_call enum_statement case_list case_default enum_arguments data_type program
@@ -149,6 +149,9 @@ statement:
     /* Switch statement */
     |   SWITCH '(' IDENTIFIER ')' '{' case_list case_default '}'       { $$ = create_oper_node(SWITCH,3,create_identifier_node($3),$6,$7); }                         
     |   BREAK SEMICOLON                                                { $$ = create_oper_node(BREAK,0); }
+
+    /* Print statement */
+    | PRINT '(' expr ')' SEMICOLON                                     { $$ = create_oper_node(PRINT, 1, $3); }
 
     /* Function Statement */
     |   data_type IDENTIFIER function_arguements_list '{' function_statement_list '}'            { $$ = create_oper_node(FUNCTION, 4, $1, create_identifier_node($2), $3, $5);}                           
