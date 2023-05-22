@@ -1,52 +1,105 @@
 ------------------ Start SYMBOL TABLE -------------------
-variable Name:	print2	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	sum	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
 ------------------ END   SYMBOL TABLE -------------------
 
 		Nested Symbol Table
 		------------------ Start SYMBOL TABLE -------------------
-		variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
+		variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
 		------------------ END   SYMBOL TABLE -------------------
 
 		Nested Symbol Table
 		------------------ Start SYMBOL TABLE -------------------
-		variable Name:	y	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
-		variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
+		variable Name:	y	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	print	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	sum	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		variable Name:	x	Value : 10	type:	Integer	is_constant:	false	is_initialized	true 
 		------------------ END   SYMBOL TABLE -------------------
 
 		Nested Symbol Table
 		------------------ Start SYMBOL TABLE -------------------
-		variable Name:	z	Value : 30	type:	Integer	is_constant:	false	is_initialized	true 
-		variable Name:	y	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
-		variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
-		------------------ END   SYMBOL TABLE -------------------
-
-		Nested Symbol Table
-		------------------ Start SYMBOL TABLE -------------------
-		variable Name:	a	Value : 40	type:	Integer	is_constant:	false	is_initialized	true 
-		variable Name:	z	Value : 30	type:	Integer	is_constant:	false	is_initialized	true 
-		variable Name:	y	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
-		variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
-		------------------ END   SYMBOL TABLE -------------------
-
-		Nested Symbol Table
-		------------------ Start SYMBOL TABLE -------------------
-		variable Name:	a	Value : 40	type:	Integer	is_constant:	false	is_initialized	true 
-		variable Name:	z	Value : 30	type:	Integer	is_constant:	false	is_initialized	true 
-		variable Name:	y	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
+		variable Name:	y	Value : 20	type:	Integer	is_constant:	false	is_initialized	true 
 		variable Name:	x	Value : 10	type:	Integer	is_constant:	false	is_initialized	true 
 		------------------ END   SYMBOL TABLE -------------------
 
 ------------------ Start SYMBOL TABLE -------------------
 variable Name:	print2	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	print	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	sum	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		variable Name:	y	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		variable Name:	z	Value : 30	type:	Integer	is_constant:	false	is_initialized	true 
+		variable Name:	y	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		variable Name:	a	Value : 40	type:	Integer	is_constant:	false	is_initialized	true 
+		variable Name:	z	Value : 30	type:	Integer	is_constant:	false	is_initialized	true 
+		variable Name:	y	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		variable Name:	a	Value : 40	type:	Integer	is_constant:	false	is_initialized	true 
+		variable Name:	z	Value : 30	type:	Integer	is_constant:	false	is_initialized	true 
+		variable Name:	y	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		variable Name:	x	Value : 10	type:	Integer	is_constant:	false	is_initialized	true 
+		------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	print2	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	print	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	sum	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
 ------------------ END   SYMBOL TABLE -------------------
 
 ------------------ Start SYMBOL TABLE -------------------
 variable Name:	a	Value : 33	type:	Integer	is_constant:	false	is_initialized	true 
 variable Name:	print2	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	print	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	sum	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
 ------------------ END   SYMBOL TABLE -------------------
 
 ------------------ Start SYMBOL TABLE -------------------
-variable Name:	a	Value : 33	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	a	Value : 20	type:	Integer	is_constant:	false	is_initialized	true 
 variable Name:	print2	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	print	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	sum	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	a	Value : 20	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	print2	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	print	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	sum	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	a	Value : 20	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	print2	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	print	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	sum	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
 ------------------ END   SYMBOL TABLE -------------------
 

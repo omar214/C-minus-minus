@@ -1,10 +1,12 @@
-// int sum(int x, int y) { return x + y; }
+int sum(int x, int y) {
+  return x + y;
+}
 
-// void print() {
-//   int x = 10;
+void print() {
+  int x = 10;
 
-//   int y = 20;
-// }
+  int y = 20;
+}
 
 void print2(int x, int y) {
   int z = 30;
@@ -15,9 +17,9 @@ void print2(int x, int y) {
 
 void main() {
   int a = 33;
-  // a = sum(10, 20);
-  // a = sum(a, a);
+  a = sum(10, 20);
+  a = sum(a, a);
 
   // print();
-  print2(10, 20);
+  // print2(10, 20);
 }

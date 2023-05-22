@@ -857,7 +857,7 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       char *param_name = p->opr.op[1]->id.id;
 
       // insert the param in the symbol table
-      insertNewVariable(param_name, param_type, *temp_param_type, false, false,
+      insertNewVariable(param_name, param_type, *temp_param_type, false, true,
                         &global_error);
 
       // check if error occured
@@ -884,7 +884,7 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       char *param_name = p->opr.op[1]->id.id;
 
       // insert the param in the symbol table
-      insertNewVariable(param_name, param_type, *temp_param_type, false, false,
+      insertNewVariable(param_name, param_type, *temp_param_type, false, true,
                         &global_error);
 
       // check if error occured
