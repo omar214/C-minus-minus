@@ -14,6 +14,8 @@ static int global_curr_label = 0;
 static int global_curr_reg = 0;
 static int global_switch_lbl = 0;
 static int global_case_lbl = 0;
+static int is_inside_loop = 0;
+static int is_inside_switch = 0;
 
 char *var;                // identifier name
 char *global_error = "";  // global variable to store any error message
@@ -404,6 +406,9 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       struct conNodeType *while_condition = p->opr.op[0];
       struct conNodeType *while_body = p->opr.op[1];
 
+      // set the inside loop flag to true
+      is_inside_loop = true;
+
       // print the start label
       fprintf(quadrableFile, "L%03d:\n", start_while_label);
 
@@ -422,6 +427,9 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       // print the end label
       fprintf(quadrableFile, "L%03d:\n", end_while_label);
 
+      // set the inside loop flag to false
+      is_inside_loop = false;
+
       return NULL;
       break;
     }
@@ -430,6 +438,9 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       int end_do_while_label = global_curr_label++;
       struct conNodeType *do_while_body = p->opr.op[0];
       struct conNodeType *do_while_condition = p->opr.op[1];
+
+      // set the inside loop flag to true
+      is_inside_loop = true;
 
       // print the start label
       fprintf(quadrableFile, "L%03d:\n", start_do_while_label);
@@ -449,6 +460,9 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       // print the end label
       fprintf(quadrableFile, "L%03d:\n", end_do_while_label);
 
+      // clear the inside loop flag
+      is_inside_loop = false;
+
       return NULL;
       break;
     }
@@ -460,6 +474,9 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       struct conNodeType *for_condition_statement = p->opr.op[1];
       struct conNodeType *for_update_statement = p->opr.op[2];
       struct conNodeType *for_body_statement = p->opr.op[3];
+
+      // set the inside loop flag to true
+      is_inside_loop = true;
 
       // execute the init statement
       ex(for_init_statement);
@@ -484,6 +501,9 @@ struct conNodeType *handle_operation_node(nodeType *p) {
 
       // print the end label
       fprintf(quadrableFile, "L%03d:\n", end_for_label);
+
+      // clear the inside loop flag
+      is_inside_loop = false;
 
       return NULL;
       break;
@@ -524,7 +544,6 @@ struct conNodeType *handle_operation_node(nodeType *p) {
         fprintf(quadrableFile, "L%03d:\n", end_else_label);
       }
 
-
       return NULL;
       break;
     }
@@ -541,6 +560,9 @@ struct conNodeType *handle_operation_node(nodeType *p) {
         break;
       }
 
+      // set the inside switch flag to true
+      is_inside_switch = true;
+
       // get the labels & register
       int start_switch_label = global_curr_label++;
       int end_switch_label = global_switch_lbl++;
@@ -554,7 +576,7 @@ struct conNodeType *handle_operation_node(nodeType *p) {
 
       // store the variable in a register
       fprintf(quadrableFile, "\tpush\t%s\n", varName);
-      fprintf(quadrableFile, "\tpop\tR%d\n", switch_var_reg);
+      fprintf(quadrableFile, "\tpop\tR%03d\n", switch_var_reg);
 
       // execute the body
       ex(switch_body_statement);
@@ -562,9 +584,11 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       // execute the default
       ex(switch_default_statement);
 
-      // print the end label
-      fprintf(quadrableFile, "L%03d:\n", end_switch_label);
+      // print the end label for Switch (S000 , S001 , ...)
+      fprintf(quadrableFile, "S%03d:\n", end_switch_label);
 
+      // clear the inside switch flag
+      is_inside_switch = false;
       break;
     }
     case CASE: {
@@ -573,13 +597,16 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       struct conNodeType *case_body_statement = p->opr.op[2];
 
       int case_reg = global_curr_reg - 1;
-      int end_case_label = global_switch_lbl++;
+      int end_case_label = global_case_lbl++;
+      // int end_case_label = global_switch_lbl++;
+
+      is_inside_switch = true;
 
       // execute the other case list , as we used left recursion
       ex(other_case_list);
 
       // push the register to the stack
-      fprintf(quadrableFile, "\tpush\tR03%d\n", case_reg);
+      fprintf(quadrableFile, "\tpush\tR%03d\n", case_reg);
 
       // push the value to compare with (int , float , char , string)
       char *temp = get_case_value_to_compare_as_string(case_value_to_compare);
@@ -589,28 +616,55 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       fprintf(quadrableFile, "\tcompEQ\n");
 
       // jumb to end_case if the condition is false
-      fprintf(quadrableFile, "\tjz\tL%03d\n", end_case_label);
+      fprintf(quadrableFile, "\tjz\tC%03d\n", end_case_label);
 
       // execute the body
       ex(case_body_statement);
 
       // jump to the end of the whole switch
-      fprintf(quadrableFile, "\tjmp\tL%03d\n", global_switch_lbl);
+      fprintf(quadrableFile, "\tjmp\tS%03d\n", global_switch_lbl - 1);
 
       // print the end label
-      fprintf(quadrableFile, "L%03d:\n", end_case_label);
+      fprintf(quadrableFile, "C%03d:\n", end_case_label);
+
+      is_inside_switch = false;
 
       break;
     }
     case DEFAULT: {
+      is_inside_switch = true;
+
       struct conNodeType *default_body_statement = p->opr.op[0];
 
       // execute the body
       ex(default_body_statement);
 
+      is_inside_switch = false;
       break;
     }
     case BREAK: {
+      // if (is_inside_switch) {
+      //   printf("inside switch\n");
+      //   break;
+      // }
+
+      // if (!is_inside_loop && !is_inside_switch) {
+      //   printf("ERROR: break statement must be inside a loop or a switch\n");
+      //   yyerror("ERROR: break statement must be inside a loop or a switch");
+      //   break;
+      // }
+
+      // if (is_inside_loop) {
+      //   // print the jump to the end of the loop
+      //   fprintf(quadrableFile, "\tjmp\tL%03d\n", global_curr_label - 1);
+      // }
+
+      // handled in the switch case
+      // if (is_inside_switch) {
+      //   print the jump to the end of the switch
+      //   fprintf(quadrableFile, "\tjmp\tS%03d\n", global_switch_lbl - 1);
+      // }
+
       break;
     }
     case FUNCTION: {
@@ -650,7 +704,7 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       changeScope(1);
 
       // execute the body
-      struct conNodeType * statement_body = p->opr.op[0];
+      struct conNodeType *statement_body = p->opr.op[0];
       ex(statement_body);
 
       // change the scope
