@@ -163,19 +163,19 @@ bool is_binary_operation(int operation) {
 char *get_operation_string(int operand) {
   switch (operand) {
     case ADD:
-      return "\tplus\n";
+      return "\tPLUS\n";
       break;
     case SUB:
-      return "\tsubtract\n";
+      return "\tSUBTRACT\n";
       break;
     case MUL:
-      return "\tmul\n";
+      return "\tMUL\n";
       break;
     case DIV:
-      return "\tdiv\n";
+      return "\tDIV\n";
       break;
     case MOD:
-      return "\tmod\n";
+      return "\tMOD\n";
       break;
     case LT:
       return "\tcompLT\n";
@@ -196,16 +196,16 @@ char *get_operation_string(int operand) {
       return "\tcompNEQ\n";
       break;
     case AND:
-      return "\tand\n";
+      return "\tAND\n";
       break;
     case OR:
-      return "\tor\n";
+      return "\tOR\n";
       break;
     case NOT:
-      return "\tnot\n";
+      return "\tNOT\n";
       break;
     case UMINUS:
-      return "\tneg\n";
+      return "\tNEG\n";
       break;
     default:
       return "";
