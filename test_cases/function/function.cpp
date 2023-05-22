@@ -5,6 +5,7 @@ int sum(int x, int y)
 
 void main()
 {
-  int a = sum(10, 20);
+  int a = 33;
+  a = sum(10, 20);
   a = sum(a, a);
 }

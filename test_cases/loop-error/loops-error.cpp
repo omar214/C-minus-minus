@@ -1,16 +1,15 @@
 void main()
 {
   int i;
-  for ( i = 0; i < 10; i++)
+  for ( i = 0; i < 10; i = i+1)
   {
     int b = 10;
   }
 
   int x = 0;
 
-  while (x < 20)
-  {
-    x++;
+  while (x < 20;) {
+    x++
   }
 
   x = 0;

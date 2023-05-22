@@ -1,5 +1,7 @@
 #!/bin/bash
 # List all directories inside test_cases folder
+
+set +e  # Turn off errexit option
 for dir in test_cases/*/; do
     # Get the directory name without the trailing slash
     dir_name=$(basename "$dir")

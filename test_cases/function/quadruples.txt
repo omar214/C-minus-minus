@@ -6,6 +6,8 @@ sum:
 	plus
 	END	sum
 main:
+	push	33
+	pop a
 	push	10
 	push	20
 	CALL	sum
