@@ -96,7 +96,8 @@ void execute(nodeType *p);
 
 
 %token FUNCTION VOIDFUNCTION FUNCVARLIST CALLVARLIST CALL SYMBOLTABLE
-%token DECLARE NEW_SCOPE STATMENT_SEPARATOR
+%token DECLARE NEW_SCOPE STATMENT_SEPARATOR SINGLE_PARAM_CALL MULTI_PARAM_CALL
+%token SINGLE_PARAM_DECLARATION MULTI_PARAM_DECLARATION FUNCTION_CALL ENUM_SINGLE_PARAM ENUM_MULTI_PARAM
 %type <nPtr> statement statement_list expr function_statement_list function_arguements_list function_arguements_call function_call enum_statement case_list case_default enum_arguments data_type program
 %type <nPtr> function_arguements 
 
@@ -163,8 +164,8 @@ statement:
 
 
 enum_arguments:
-        enum_arguments COMMA IDENTIFIER     { $$ = create_oper_node(',', 2, $1, create_identifier_node($3)); } 
-    |   IDENTIFIER                          { $$ = create_oper_node(STATMENT_SEPARATOR, 2, NULL, NULL);} // TODO: check this
+        enum_arguments COMMA IDENTIFIER     { $$ = create_oper_node(ENUM_MULTI_PARAM, 2, $1, create_identifier_node($3)); } 
+    |   IDENTIFIER                          { $$ = create_oper_node(ENUM_SINGLE_PARAM, 2, NULL, NULL);} // TODO: check this
     ;
 
 enum_statement:
@@ -211,7 +212,7 @@ expr:
     |   expr OR expr            { $$ = create_oper_node(OR, 2, $1, $3); }
     
     /* function call or grouped */
-    |   IDENTIFIER function_call        { $$ = create_oper_node('t', 2, create_identifier_node($1), $2);}                                                       
+    |   IDENTIFIER function_call        { $$ = create_oper_node(FUNCTION_CALL, 2, create_identifier_node($1), $2);}                                                       
     |   '(' expr ')'                    { $$ = $2; }                                                   
     ;
 
@@ -222,8 +223,8 @@ function_statement_list:
     ;
 
 function_arguements:
-        data_type IDENTIFIER                                  { $$ = create_oper_node('r', 2, $1, create_identifier_node($2)); }                                  
-    |   data_type IDENTIFIER COMMA function_arguements        { $$ = create_oper_node(STATMENT_SEPARATOR, 3, $1, create_identifier_node($2), $4); }                                          
+        data_type IDENTIFIER                                  { $$ = create_oper_node(SINGLE_PARAM_DECLARATION, 2, $1, create_identifier_node($2)); }                                  
+    |   data_type IDENTIFIER COMMA function_arguements        { $$ = create_oper_node(MULTI_PARAM_DECLARATION , 3, $1, create_identifier_node($2), $4); }                                          
     ;
 
 function_arguements_list:
@@ -232,8 +233,8 @@ function_arguements_list:
 ;
 
 function_arguements_call:
-        expr                                    { $$ = create_oper_node('q', 1, $1 ); }                                       
-    |   function_arguements_call COMMA expr     { $$ = create_oper_node(':', 2, $1, $3); }                                                     
+        expr                                    { $$ = create_oper_node(SINGLE_PARAM_CALL, 1, $1 );}                                       
+    |   function_arguements_call COMMA expr     { $$ = create_oper_node(MULTI_PARAM_CALL , 2, $1, $3); }                                                     
     ;
 
 function_call:

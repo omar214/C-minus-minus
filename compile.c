@@ -667,6 +667,13 @@ struct conNodeType *handle_operation_node(nodeType *p) {
 
       break;
     }
+    case RETURN: {
+      // get the return expression
+      struct conNodeType *return_expression = p->opr.op[0];
+
+      // return the value
+      return ex(return_expression);
+    }
     case FUNCTION: {
       // get the function type
       struct conNodeType *temp = ex(p->opr.op[0]);
@@ -691,11 +698,17 @@ struct conNodeType *handle_operation_node(nodeType *p) {
         break;
       }
 
-      // change the scope
-      changeScope(1);
-
       // print the function name
       fprintf(quadrableFile, "%s:\n", funcName);
+
+      // append the function to the function linked list
+      functionLinkedList *newFunction = malloc(sizeof(functionLinkedList));
+      newFunction->name = funcName;
+      newFunction->next = functionListHeader;
+      functionListHeader = newFunction;
+
+      // change the scope
+      changeScope(1);
 
       // execute the function param
       ex(function_param);
@@ -705,12 +718,6 @@ struct conNodeType *handle_operation_node(nodeType *p) {
 
       // change the scope
       changeScope(-1);
-
-      // append the function to the function linked list
-      functionLinkedList *newFunction = malloc(sizeof(functionLinkedList));
-      newFunction->name = funcName;
-      newFunction->next = functionListHeader;
-      functionListHeader = newFunction;
 
       // print the end of the function
       fprintf(quadrableFile, "\tEND\t%s\n", funcName);
@@ -741,6 +748,15 @@ struct conNodeType *handle_operation_node(nodeType *p) {
         break;
       }
 
+      // print the function name
+      fprintf(quadrableFile, "%s:\n", funcName);
+
+      // append the function to the function linked list
+      functionLinkedList *newFunction = malloc(sizeof(functionLinkedList));
+      newFunction->name = funcName;
+      newFunction->next = functionListHeader;
+      functionListHeader = newFunction;
+
       // check if main
       bool is_main = strcmp(funcName, "main") == 0;
 
@@ -748,9 +764,6 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       if (!is_main) {
         changeScope(1);
       }
-
-      // print the function name
-      fprintf(quadrableFile, "%s:\n", funcName);
 
       // execute the function param
       ex(function_param);
@@ -763,12 +776,6 @@ struct conNodeType *handle_operation_node(nodeType *p) {
         changeScope(-1);
       }
 
-      // append the function to the function linked list
-      functionLinkedList *newFunction = malloc(sizeof(functionLinkedList));
-      newFunction->name = funcName;
-      newFunction->next = functionListHeader;
-      functionListHeader = newFunction;
-
       // print the end of the function
       if (is_main) {
         fprintf(quadrableFile, "\tHLT\n");
@@ -778,27 +785,15 @@ struct conNodeType *handle_operation_node(nodeType *p) {
 
       break;
     }
-
     case STATMENT_SEPARATOR: {
-      int num_ops = p->opr.nops;
+      struct conNodeType *first_statement = p->opr.op[0];
+      struct conNodeType *second_statement = p->opr.op[1];
 
-      bool is_inside_function = (num_ops == 3);
+      // execute the first statement
+      ex(first_statement);
 
-      // the default case (statemetn , statment)
-      if (!is_inside_function) {
-        printf("inside statment separator\n");
-
-        struct conNodeType *first_statement = p->opr.op[0];
-        struct conNodeType *second_statement = p->opr.op[1];
-
-        // execute the first statement
-        ex(first_statement);
-
-        // execute the second statement
-        return ex(second_statement);
-      } else {
-        // TODO: handle this
-      }
+      // execute the second statement
+      return ex(second_statement);
 
       break;
     }
@@ -818,17 +813,116 @@ struct conNodeType *handle_operation_node(nodeType *p) {
       return NULL;
       break;
     }
-      // TODO: handle all below
-    case 't': {
+    case FUNCTION_CALL: {
+      // get the function name
+      char *funcName = p->opr.op[0]->id.id;
+
+      // check if the function is defined
+      functionLinkedList *func_iterator = functionListHeader;
+      bool is_defined = false;
+      while (func_iterator != NULL) {
+        is_defined = strcmp(func_iterator->name, funcName) == 0;
+        if (is_defined) break;
+
+        func_iterator = func_iterator->next;
+      }
+
+      // check if the function is defined
+      if (!is_defined) {
+        printf("ERROR: function %s is not defined\n", funcName);
+        yyerror("function is not defined");
+        break;
+      }
+
+      // get the function param
+      struct conNodeType *function_param = p->opr.op[1];
+
+      // execute the function param
+      struct conNodeType *param_result = ex(function_param);
+
+      // print the call to the function
+      fprintf(quadrableFile, "\tCALL\t%s\n", funcName);
+
+      return param_result;
       break;
     }
-    case 'r': {
+    case SINGLE_PARAM_DECLARATION: {
+      // get the param name
+      struct conNodeType *temp_param_type = ex(p->opr.op[0]);
+      conEnum param_type = temp_param_type->type;
+
+      printf("param type: %d\n", param_type);
+
+      // get the param name
+      char *param_name = p->opr.op[1]->id.id;
+
+      // insert the param in the symbol table
+      insertNewVariable(param_name, param_type, *temp_param_type, false, false,
+                        &global_error);
+
+      // check if error occured
+      if (global_error != "") {
+        printf("ERROR: %s\n", global_error);
+        yyerror(global_error);
+        global_error = "";
+        break;
+      }
+
+      // print the param name
+      fprintf(quadrableFile, "\tPOP\t%s\n", param_name);
+
+      return temp_param_type;
+
       break;
     }
-    case 'q': {
+    case MULTI_PARAM_DECLARATION: {
+      // get the param type
+      struct conNodeType *temp_param_type = ex(p->opr.op[0]);
+      conEnum param_type = temp_param_type->type;
+
+      // get the param name
+      char *param_name = p->opr.op[1]->id.id;
+
+      // insert the param in the symbol table
+      insertNewVariable(param_name, param_type, *temp_param_type, false, false,
+                        &global_error);
+
+      // check if error occured
+      if (global_error != "") {
+        printf("ERROR: %s\n", global_error);
+        yyerror(global_error);
+        global_error = "";
+        break;
+      }
+
+      // print the param name
+      fprintf(quadrableFile, "\tPOP\t%s\n", param_name);
+
+      // get the second argument
+      struct conNodeType *second_statement = p->opr.op[2];
+
+      // execute the second statement
+      return ex(second_statement);
+
       break;
     }
-    case ':': {
+    case SINGLE_PARAM_CALL: {
+      // execute the expression
+      return ex(p->opr.op[0]);
+
+      break;
+    }
+    case MULTI_PARAM_CALL: {
+      // if more than 2 params it's handled by the left recursion
+      nodeType *first_param = p->opr.op[0];
+      nodeType *second_param = p->opr.op[1];
+
+      // execute the first param
+      ex(first_param);
+
+      // execute the second param
+      return ex(second_param);
+
       break;
     }
 

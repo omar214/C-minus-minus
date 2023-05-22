@@ -107,6 +107,7 @@ void printSymbolTable(bool is_print_nest = false) {
         var_type_str = "Void";
         break;
       default:
+        var_type_str = "Unknown";
         break;
     }
     if (var_name == "main") {
