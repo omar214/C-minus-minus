@@ -3,7 +3,7 @@ sum:
 	POP	y
 	push	x
 	push	y
-	plus
+	PLUS
 	END	sum
 print2:
 	POP	x
@@ -14,7 +14,7 @@ print2:
 	pop a
 	push	5
 	push	5
-	plus
+	PLUS
 	pop x
 	END	print2
 main:
@@ -28,37 +28,6 @@ main:
 	push	a
 	CALL	sum
 	pop a
-	push	4
-	pop	R000
-	print R000
-	push	'4'
-	pop	R000
-	print R000
-	push	"asdasdas"
-	pop	R000
-	print R000
-	push	4
-	push	5
-	push	6
-	mul
-	plus
-	push	4
-	push	2
-	div
-	plus
-	pop	R000
-	print R000
-	push	4
-	push	5
-	plus
-	push	6
-	mul
-	push	4
-	push	2
-	div
-	plus
-	pop	R000
-	print R000
 	push	10
 	push	20
 	CALL	print2

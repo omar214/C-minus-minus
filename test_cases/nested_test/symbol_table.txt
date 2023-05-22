@@ -1,0 +1,22 @@
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	x	Value : 5	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	c	Value : 20	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	x	Value : 5	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	c	Value : 21	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	x	Value : 4	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+

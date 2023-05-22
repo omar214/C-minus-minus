@@ -1,0 +1,94 @@
+	push	2
+	pop a
+	push	3
+	pop b
+	push	a
+	push	b
+	PLUS
+	pop c
+	push	4.500000
+	push	6.500000
+	MUL
+	pop d
+	push	1
+	pop bo
+	push	"MangaCC"
+	pop s
+	push	a
+	push	b
+	compGT
+	jz	L000
+	push	c
+	push	2
+	MOD
+	pop c
+	print	1	// var_name = c
+ 	jmp	L001
+L000:
+	print	1	// var_name = c
+ 	push	5
+	push	2
+	DIV
+	pop c
+	push	"C = C / 2"
+	pop aaa
+	print	"C = C / 2"	// var_name = aaa
+ 	print	2	// var_name = c
+ L001:
+	push	a
+	push	2
+	compLT
+	jz	L002
+	push	0
+	pop bo
+L002:
+L003:
+	push	a
+	push	0
+	compGT
+	jz L004
+	push	a
+	push	1
+	SUBTRACT
+	pop a
+	jmp L003
+L004:
+func:
+	POP	a
+	POP	b
+	push	a
+	push	b
+	PLUS
+	END	func
+	push	0
+	pop i
+L005:
+	push	i
+	push	10
+	compLT
+	jz	L006
+	push	c
+	push	1
+	PLUS
+	pop c
+	push	i
+	push	1
+	PLUS
+	pop i
+	jmp	L005
+L006:
+L007:
+	push	c
+	push	1
+	PLUS
+	pop c
+	push	c
+	push	10
+	compGT
+	jz L008
+	jmp L007
+L008:
+	push	2
+	push	3
+	CALL	func
+	pop e

@@ -1,0 +1,146 @@
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	a	Value : 2	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	b	Value : 3	type:	Integer	is_constant:	true	is_initialized	true 
+variable Name:	a	Value : 2	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	c	Value : 5	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	b	Value : 3	type:	Integer	is_constant:	true	is_initialized	true 
+variable Name:	a	Value : 2	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	c	Value : 5	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	b	Value : 3	type:	Integer	is_constant:	true	is_initialized	true 
+variable Name:	d	Value : 29.250000	type:	Float	is_constant:	false	is_initialized	true 
+variable Name:	a	Value : 2	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	bo	Value : 1	type:	Bool	is_constant:	false	is_initialized	true 
+variable Name:	c	Value : 5	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	b	Value : 3	type:	Integer	is_constant:	true	is_initialized	true 
+variable Name:	d	Value : 29.250000	type:	Float	is_constant:	false	is_initialized	true 
+variable Name:	a	Value : 2	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	s	Value : "MangaCC"	type:	String	is_constant:	false	is_initialized	true 
+variable Name:	bo	Value : 1	type:	Bool	is_constant:	false	is_initialized	true 
+variable Name:	c	Value : 5	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	b	Value : 3	type:	Integer	is_constant:	true	is_initialized	true 
+variable Name:	d	Value : 29.250000	type:	Float	is_constant:	false	is_initialized	true 
+variable Name:	a	Value : 2	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		variable Name:	aaa	Value : "C = C / 2"	type:	String	is_constant:	false	is_initialized	true 
+		------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	func	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	s	Value : "MangaCC"	type:	String	is_constant:	false	is_initialized	true 
+variable Name:	bo	Value : 0	type:	Bool	is_constant:	false	is_initialized	true 
+variable Name:	c	Value : 2	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	b	Value : 3	type:	Integer	is_constant:	true	is_initialized	true 
+variable Name:	d	Value : 29.250000	type:	Float	is_constant:	false	is_initialized	true 
+variable Name:	a	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		variable Name:	a	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		variable Name:	b	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		variable Name:	a	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	i	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
+variable Name:	func	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	s	Value : "MangaCC"	type:	String	is_constant:	false	is_initialized	true 
+variable Name:	bo	Value : 0	type:	Bool	is_constant:	false	is_initialized	true 
+variable Name:	c	Value : 2	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	b	Value : 3	type:	Integer	is_constant:	true	is_initialized	true 
+variable Name:	d	Value : 29.250000	type:	Float	is_constant:	false	is_initialized	true 
+variable Name:	a	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	i	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	func	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	s	Value : "MangaCC"	type:	String	is_constant:	false	is_initialized	true 
+variable Name:	bo	Value : 0	type:	Bool	is_constant:	false	is_initialized	true 
+variable Name:	c	Value : 2	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	b	Value : 3	type:	Integer	is_constant:	true	is_initialized	true 
+variable Name:	d	Value : 29.250000	type:	Float	is_constant:	false	is_initialized	true 
+variable Name:	a	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	i	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	func	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	s	Value : "MangaCC"	type:	String	is_constant:	false	is_initialized	true 
+variable Name:	bo	Value : 0	type:	Bool	is_constant:	false	is_initialized	true 
+variable Name:	c	Value : 3	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	b	Value : 3	type:	Integer	is_constant:	true	is_initialized	true 
+variable Name:	d	Value : 29.250000	type:	Float	is_constant:	false	is_initialized	true 
+variable Name:	a	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	e	Value : 3	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	i	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	func	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	s	Value : "MangaCC"	type:	String	is_constant:	false	is_initialized	true 
+variable Name:	bo	Value : 0	type:	Bool	is_constant:	false	is_initialized	true 
+variable Name:	c	Value : 4	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	b	Value : 3	type:	Integer	is_constant:	true	is_initialized	true 
+variable Name:	d	Value : 29.250000	type:	Float	is_constant:	false	is_initialized	true 
+variable Name:	a	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	e	Value : 3	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	i	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	func	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	s	Value : "MangaCC"	type:	String	is_constant:	false	is_initialized	true 
+variable Name:	bo	Value : 0	type:	Bool	is_constant:	false	is_initialized	true 
+variable Name:	c	Value : 4	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	b	Value : 3	type:	Integer	is_constant:	true	is_initialized	true 
+variable Name:	d	Value : 29.250000	type:	Float	is_constant:	false	is_initialized	true 
+variable Name:	a	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+

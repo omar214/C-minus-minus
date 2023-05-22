@@ -1,0 +1,45 @@
+	push	1
+	pop ahmed
+	push	5
+	pop y
+	print	5	// var_name = y
+ 	push	y
+	pop x
+	print	5	// var_name = x
+ 	push	8.300000
+	pop x
+	print	8.300000	// var_name = x
+ 	print	8.300000	// var_name = x
+ 	push	5
+	pop x
+	print	5	// var_name = x
+ 	print	8.300000	// var_name = x
+ 	push	6
+	pop y
+	print	5	// var_name = x
+ 	print	6	// var_name = y
+ main:
+	push	5
+	pop x
+	print	5	// var_name = x
+ 	push	6
+	pop x
+	print	6	// var_name = x
+ 	print	5	// var_name = x
+ 	HLT
+	print	5	// var_name = x
+ 	print	6	// var_name = y
+ func:
+	POP	x
+	POP	y
+	push	5.600000
+	pop x
+	print	5.600000	// var_name = x
+ 	print	0.000000	// var_name = y
+ 	push	x
+	push	y
+	PLUS
+	END	func
+	print	5	// var_name = x
+ 	print	6	// var_name = y
+ 

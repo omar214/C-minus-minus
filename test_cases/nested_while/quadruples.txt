@@ -1,0 +1,46 @@
+main:
+	push	1
+	pop x
+	push	6
+	pop y
+L000:
+	push	x
+	push	5
+	compGT
+	jz L001
+L002:
+	push	x
+	push	0
+	compLT
+	jz L003
+	push	-1
+	pop x
+L004:
+	push	x
+	push	0
+	compGT
+	jz L005
+	push	5
+	pop z
+	push	x
+	push	1
+	SUBTRACT
+	pop x
+	jmp L004
+L005:
+	jmp L002
+L003:
+L006:
+	push	y
+	push	0
+	compGT
+	jz L007
+	push	y
+	push	1
+	SUBTRACT
+	pop y
+	jmp L006
+L007:
+	jmp L000
+L001:
+	HLT

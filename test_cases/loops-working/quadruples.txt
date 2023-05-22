@@ -10,7 +10,7 @@ L000:
 	pop b
 	push	i
 	push	1
-	plus
+	PLUS
 	pop i
 	jmp	L000
 L001:
@@ -23,7 +23,7 @@ L002:
 	jz L003
 	push	x
 	push	1
-	plus
+	PLUS
 	pop x
 	jmp L002
 L003:
@@ -32,7 +32,7 @@ L003:
 L004:
 	push	x
 	push	1
-	plus
+	PLUS
 	pop x
 	push	x
 	push	20

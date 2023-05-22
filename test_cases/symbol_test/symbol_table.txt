@@ -1,0 +1,85 @@
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	ahmed	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	y	Value : 5	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	ahmed	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	y	Value : 5	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	ahmed	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	x	Value : 5	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		variable Name:	x	Value : 8.300000	type:	Float	is_constant:	false	is_initialized	true 
+		------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		variable Name:	x	Value : 5	type:	Integer	is_constant:	false	is_initialized	true 
+		------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	y	Value : 6	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	ahmed	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	x	Value : 5	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	y	Value : 6	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	ahmed	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	x	Value : 5	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	y	Value : 6	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	ahmed	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	x	Value : 5	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		variable Name:	x	Value : 6	type:	Integer	is_constant:	false	is_initialized	true 
+		------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	func	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	y	Value : 6	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	ahmed	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	x	Value : 5	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		variable Name:	x	Value : 0.000000	type:	Float	is_constant:	false	is_initialized	true 
+		------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		variable Name:	y	Value : 0.000000	type:	Float	is_constant:	false	is_initialized	true 
+		variable Name:	x	Value : 0.000000	type:	Float	is_constant:	false	is_initialized	true 
+		------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		variable Name:	y	Value : 0.000000	type:	Float	is_constant:	false	is_initialized	true 
+		variable Name:	x	Value : 5.600000	type:	Float	is_constant:	false	is_initialized	true 
+		------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	func	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	y	Value : 6	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	ahmed	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	x	Value : 5	type:	Integer	is_constant:	false	is_initialized	true 
+------------------ END   SYMBOL TABLE -------------------
+

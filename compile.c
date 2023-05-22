@@ -678,7 +678,7 @@ struct conNodeType *handle_operation_node(nodeType *p) {
         default:
           break;
       }
-      bool is_print_var_name = false;
+      bool is_print_var_name = true;
       if (is_print_var_name) {
         fprintf(quadrableFile, "// var_name = %s\n ", varName);
       } else {
