@@ -2,6 +2,7 @@ main:
 	push	345
 	pop x
 	print	345	// var_name = x
+ 	print	345	// var_name = x
  	push	1
 	pop x
 	print	1	// var_name = x
