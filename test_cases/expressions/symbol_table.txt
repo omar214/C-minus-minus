@@ -5,6 +5,11 @@
 variable Name:	x	Value : 345	type:	Integer	is_constant:	false	is_initialized	true 
 ------------------ END   SYMBOL TABLE -------------------
 
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	x	Value : 345	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	z	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
+------------------ END   SYMBOL TABLE -------------------
+
 		Nested Symbol Table
 		------------------ Start SYMBOL TABLE -------------------
 		variable Name:	x	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
@@ -12,5 +17,6 @@ variable Name:	x	Value : 345	type:	Integer	is_constant:	false	is_initialized	tru
 
 ------------------ Start SYMBOL TABLE -------------------
 variable Name:	x	Value : 345	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	z	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
 ------------------ END   SYMBOL TABLE -------------------
 

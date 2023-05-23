@@ -281,7 +281,7 @@ int main(int argc, char* argv[]) {
 
     yyout = create_file(errorFilePath);
     quadrables_file = create_file(quadruplesPath);
-    setTablePath(symbolTablePath);
+    setTablePath(symbolTablePath, errorFilePath);
     setQuadrableFilePath(quadruplesPath, quadrables_file);
 
     printf("debug: %d\n", debug);
@@ -292,6 +292,7 @@ int main(int argc, char* argv[]) {
     #endif
     yyparse();
     printSymbolTable(false);
+    print_unused_variables();
     fclose(yyin);
     fclose(yyout);
     clearTablePath();

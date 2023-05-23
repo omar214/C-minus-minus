@@ -9,6 +9,7 @@
 
 // user defined headers
 #include "parser.h"
+#include "y.tab.h"
 
 // we want to use the code with c language so we we used this
 #ifdef __cplusplus
@@ -21,7 +22,7 @@ typedef enum { down = -1, up = 1 } scopeEnum;
  * @brief Set the Table Path object & opens the file to write to it
  * @param path the path of the symbol table file
  */
-void setTablePath(char* path);
+void setTablePath(char* path, char * err_file_path);
 
 /**
  * @brief Clear the Table Path object & closes the file of the symbol table
@@ -66,6 +67,12 @@ struct conNodeType* getVariable(char* var, char** error,
  * @brief print the symbol table
  */
 void printSymbolTable(bool is_print_nest);
+
+/**
+ * @brief print the unused variables
+ *
+ */
+void print_unused_variables();
 
 #ifdef __cplusplus
 }  // end extern "C"

@@ -1,5 +1,6 @@
 void main() {
   int x = 345;
+  int z;
 
   print(x);
   {

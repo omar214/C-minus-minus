@@ -7,6 +7,7 @@
 #include <unordered_map>
 #include <vector>
 using namespace std;
+extern int yy_lineno;
 
 // user defined headers
 #include "parser.h"
@@ -21,18 +22,24 @@ struct symbol_table {
   symbol_table *parent = NULL;
 };
 
+map<string, int> is_used;
+
 // global variables
 string symbol_table_path = "";
 ofstream symbol_table_file;
+ofstream error_file;
 symbol_table curr_global_table;
 
 /**
  * @brief Set the Table Path object & opens the file to write to it
  * @param path the path of the symbol table file
  */
-void setTablePath(char *path) {
+void setTablePath(char *path, char *err_file_path) {
   symbol_table_path = string(path);
   symbol_table_file.open(symbol_table_path);
+
+  // set the error file
+  error_file.open(err_file_path);
 }
 
 /**
@@ -42,6 +49,8 @@ void setTablePath(char *path) {
 void clearTablePath() {
   symbol_table_path = "";
   symbol_table_file.close();
+
+  error_file.close();
 }
 
 /**
@@ -278,6 +287,7 @@ struct conNodeType *insertNewVariable(char *var_name, conEnum var_type,
   curr_global_table.symtable.insert({var_name, type_value});
 
   conNodeType *variableNode = &(curr_global_table.symtable[var_name].first);
+  is_used[var_name] = false;
 
   try {
     printSymbolTable(false);  // false to not print nested scopes
@@ -307,6 +317,8 @@ struct conNodeType *getVariable(char *var_name, char **error,
     if (is_found) {
       conNodeType *variableNode = &(table_iterator->symtable[var_name].first);
       *resultNode = variableNode;
+      is_used[var_name] = true;
+
       bool has_value = table_iterator->symtable[var_name].second.second;
       if (!has_value) {
         *error = (char *)malloc(sizeof(char) * 100);
@@ -321,4 +333,20 @@ struct conNodeType *getVariable(char *var_name, char **error,
   *error = (char *)malloc(sizeof(char) * 100);
   strcpy(*error, "variable is not declared");
   return NULL;
+}
+
+/**
+ * @brief print the unused variables
+ *
+ */
+void print_unused_variables() {
+  printf("\n\nUnused variables:\n");
+  for (auto it = is_used.begin(); it != is_used.end(); it++) {
+    if (!it->second && it->first != "main") {
+      string temp = "Warning at line [" + to_string(yy_lineno) +
+                    "]: " + it->first + " is not used\n";
+
+      error_file << temp << endl;
+    }
+  }
 }
