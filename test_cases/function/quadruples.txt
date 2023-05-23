@@ -2,8 +2,12 @@ sum:
 	POP	x
 	POP	y
 	push	x
+	pop res
+	push	res
 	push	y
 	PLUS
+	pop res
+	push	res
 	END	sum
 print2:
 	POP	x

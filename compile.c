@@ -895,10 +895,15 @@ struct conNodeType *handle_operation_node(nodeType *p) {
         func_iterator = func_iterator->next;
       }
 
+      //  get the variable from the symbol table
+      struct conNodeType *temp = malloc(sizeof(struct conNodeType *));
+      getVariable(funcName, &global_error, &temp);
+
       // check if the function is defined
-      if (!is_defined) {
+      if (!is_defined || global_error != "") {
         printf("ERROR: function %s is not defined\n", funcName);
         yyerror("function is not defined");
+        global_error = "";
         break;
       }
 

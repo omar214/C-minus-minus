@@ -13,6 +13,20 @@ variable Name:	sum	Value : 0	type:	Integer	is_constant:	false	is_initialized	tru
 		variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
 		------------------ END   SYMBOL TABLE -------------------
 
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		variable Name:	res	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		variable Name:	y	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		------------------ END   SYMBOL TABLE -------------------
+
+		Nested Symbol Table
+		------------------ Start SYMBOL TABLE -------------------
+		variable Name:	res	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		variable Name:	y	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		variable Name:	x	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
+		------------------ END   SYMBOL TABLE -------------------
+
 ------------------ Start SYMBOL TABLE -------------------
 variable Name:	print2	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 
 variable Name:	sum	Value : 0	type:	Integer	is_constant:	false	is_initialized	true 

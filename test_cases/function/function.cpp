@@ -1,4 +1,8 @@
-int sum(int x, int y) { return x + y; }
+int sum(int x, int y) {
+  int res = x;
+  res = res + y;
+  return res;
+}
 
 void print2(int x, int y) {
   int z = 30;
@@ -15,8 +19,6 @@ void main() {
   print(4);
   print('4');
   print("asdasdas");
-  print(4 + 5 * 6 + 4 / 2);
-  print((4 + 5) * 6 + 4 / 2);
 
   print2(10, 20);
 }

@@ -1,2 +1,6 @@
 Error at line [10]: variable is not initialized
 Error at line [10]: Error: type missmatch for the variable
+ed
+
+Warning at line [10]: x is not used
+

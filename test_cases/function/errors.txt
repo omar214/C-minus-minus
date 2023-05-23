@@ -1,0 +1,6 @@
+Warning at line [24]: x is not used
+
+Warning at line [24]: y is not used
+
+Warning at line [24]: z is not used
+
