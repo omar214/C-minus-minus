@@ -1,6 +1,7 @@
 void main() {
   int x = 345;
-  int z;
+  float f = 3.14;
+  int y = 1;
 
   print(x);
   {

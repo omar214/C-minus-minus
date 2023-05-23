@@ -1,6 +1,10 @@
 main:
 	push	345
 	pop x
+	push	3.140000
+	pop f
+	push	1
+	pop y
 	print	345	// var_name = x
  	print	345	// var_name = x
  	push	1

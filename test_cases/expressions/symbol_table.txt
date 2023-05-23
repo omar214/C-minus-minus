@@ -6,8 +6,14 @@ variable Name:	x	Value : 345	type:	Integer	is_constant:	false	is_initialized	tru
 ------------------ END   SYMBOL TABLE -------------------
 
 ------------------ Start SYMBOL TABLE -------------------
+variable Name:	f	Value : 3.140000	type:	Float	is_constant:	false	is_initialized	true 
 variable Name:	x	Value : 345	type:	Integer	is_constant:	false	is_initialized	true 
-variable Name:	z	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
+------------------ END   SYMBOL TABLE -------------------
+
+------------------ Start SYMBOL TABLE -------------------
+variable Name:	y	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	f	Value : 3.140000	type:	Float	is_constant:	false	is_initialized	true 
+variable Name:	x	Value : 345	type:	Integer	is_constant:	false	is_initialized	true 
 ------------------ END   SYMBOL TABLE -------------------
 
 		Nested Symbol Table
@@ -16,7 +22,8 @@ variable Name:	z	Value : 0	type:	Integer	is_constant:	false	is_initialized	false
 		------------------ END   SYMBOL TABLE -------------------
 
 ------------------ Start SYMBOL TABLE -------------------
+variable Name:	y	Value : 1	type:	Integer	is_constant:	false	is_initialized	true 
+variable Name:	f	Value : 3.140000	type:	Float	is_constant:	false	is_initialized	true 
 variable Name:	x	Value : 345	type:	Integer	is_constant:	false	is_initialized	true 
-variable Name:	z	Value : 0	type:	Integer	is_constant:	false	is_initialized	false 
 ------------------ END   SYMBOL TABLE -------------------
 

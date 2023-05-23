@@ -1,2 +1,4 @@
-Warning at line [12]: z is not used
+Warning at line [13]: f is not used
+
+Warning at line [13]: y is not used
 
