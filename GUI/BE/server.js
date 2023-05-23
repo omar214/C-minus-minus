@@ -37,21 +37,40 @@ const wslCommand = async (command) => {
 	});
 };
 
-app.post('/compile', async (req, res) => {
-	let outputDir = req.body.outputDir;
-	let inputFile = req.body.inputFile;
+const getTestCasesDirectory = () => {
+	let testCasesDirectory = __dirname;
+	testCasesDirectory = testCasesDirectory.substring(
+		0,
+		testCasesDirectory.lastIndexOf('\\'),
+	);
+	testCasesDirectory = testCasesDirectory.substring(
+		0,
+		testCasesDirectory.lastIndexOf('\\'),
+	);
 
-	if (!inputFile || !outputDir) {
-		return res
-			.status(400)
-			.json({ error: 'Please provide input file and output directory.' });
+	testCasesDirectory = testCasesDirectory + '\\test_cases';
+	return testCasesDirectory;
+};
+
+app.post('/compile', async (req, res) => {
+	let inputFile = req.body.inputFile;
+	if (!inputFile) {
+		return res.status(400).json({ error: 'Please provide input file .' });
 	}
+	// get the test_cases dir
+	let testCasesDirectory = getTestCasesDirectory();
+
+	// get the output dir
+	let inputFilewithoutExtension = inputFile.split('.')[0];
+	let outputDirectory = testCasesDirectory + '\\' + inputFilewithoutExtension;
 
 	// convert to wsl path
-	let wsl_inputFile =
-		'\\mnt\\' + inputFile.charAt(0).toLowerCase() + inputFile.slice(2);
 	let wsl_outputDir =
-		'\\mnt\\' + outputDir.charAt(0).toLowerCase() + outputDir.slice(2);
+		'\\mnt\\' +
+		outputDirectory.charAt(0).toLowerCase() +
+		outputDirectory.slice(2);
+
+	let wsl_inputFile = wsl_outputDir + '\\' + inputFile;
 
 	// fix path
 	wsl_inputFile = wsl_inputFile.replace(/\\/g, '/');
@@ -67,15 +86,15 @@ app.post('/compile', async (req, res) => {
 
 		try {
 			const quadruples = await fs.promises.readFile(
-				`${outputDir}/quadruples.txt`,
+				`${outputDirectory}/quadruples.txt`,
 				'utf8',
 			);
 			const symbolTable = await fs.promises.readFile(
-				`${outputDir}/symbol_table.txt`,
+				`${outputDirectory}/symbol_table.txt`,
 				'utf8',
 			);
 			const errors = await fs.promises.readFile(
-				`${outputDir}/errors.txt`,
+				`${outputDirectory}/errors.txt`,
 				'utf8',
 			);
 

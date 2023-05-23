@@ -12,7 +12,7 @@ flex:
 
 server: 
 	@echo -e \n----------- Running BE Server -----------
-	node GUI/BE/server.js
+	cd GUI/BE &&  nodemon server.js
 
 compile:
 	@echo -e \n----------- Compiling both -----------
