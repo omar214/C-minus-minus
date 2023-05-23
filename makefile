@@ -14,6 +14,10 @@ server:
 	@echo -e \n----------- Running BE Server -----------
 	cd GUI/BE &&  nodemon server.js
 
+client: 
+	@echo -e \n----------- Running BE Server -----------
+	cd GUI/FE &&  yarn dev
+
 compile:
 	@echo -e \n----------- Compiling both -----------
 	g++ -c -g symbolTable.cpp

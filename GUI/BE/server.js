@@ -1,11 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const { exec, spawn } = require('child_process');
 const fs = require('fs');
 
 const app = express();
 
 app.use(bodyParser.json());
+app.use(cors());
 
 const wslCommand = async (command) => {
 	return new Promise((resolve, reject) => {
