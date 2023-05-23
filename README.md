@@ -4,7 +4,6 @@
 
 - [Overview](#about)
 - [Features](#features)
-
 - [Tools & Technologies](#tools)
 - [How To Run](#start)
 - [GUI](#GUI)
